@@ -1,0 +1,22 @@
+# Data files (large binaries)
+data/
+results/
+catboost_info/
+paper_trading/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Keys and secrets
+*.pem
+*.key
+
+# Node
+node_modules/
+
+# Misc
+*.log
+*.db
+*.png

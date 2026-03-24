@@ -1,0 +1,21 @@
+services:
+  paper-trading:
+    build: .
+    container_name: crypto-paper-trading
+    restart: unless-stopped
+    ports:
+      - "5001:5001"
+    volumes:
+      - paper_data:/app/paper_trading
+    environment:
+      - PYTHONUNBUFFERED=1
+      - TZ=UTC
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/api/state"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+
+volumes:
+  paper_data:

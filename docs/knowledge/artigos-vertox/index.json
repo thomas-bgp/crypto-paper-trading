@@ -1,0 +1,346 @@
+[
+  {
+    "href": "https://www.vertoxquant.com/p/learning-to-rank",
+    "text": "95% of Stat Arb Strategies Are Built Wrong"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/discrete-market-making",
+    "text": "Discrete Market Making"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/advanced-regime-algorithms",
+    "text": "Advanced Regime Algorithms"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/why-mean-variance-optimization-breaks",
+    "text": "Why Mean-Variance Optimization Breaks Down"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/the-myth-of-factor-free-crypto",
+    "text": "The Myth of Factor-Free Crypto"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/fitting-regime-switching-models",
+    "text": "Fitting Regime Switching Models to High-Frequency Data"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/the-birth-of-a-quant-community",
+    "text": "The Birth of a Quant Community"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/regime-switching-models-for-microstructure",
+    "text": "Regime Switching Models for Microstructure Features"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/2026-quant-crash-course",
+    "text": "What I'd Teach Someone Starting Quant Trading in 2026"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/honey-i-shrunk-the-sample-betas",
+    "text": "Honey, I Shrunk the Sample Betas"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/volatility-forecasting-from-hft",
+    "text": "Volatility Forecasting from High-Frequency Quotes"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/kelly-criterion-in-practice",
+    "text": "Kelly Criterion in Practice"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/your-favorite-quant-articles-are",
+    "text": "Your favorite Quant articles are now easier to access!"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/how-to-model-order-flow-in-hft",
+    "text": "How to Model Order-Flow in HFT"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/pricing-illiquid-options-using-proxy",
+    "text": "Pricing Illiquid Options Using Proxy Volatility Surfaces"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/how-to-price-touch-style-options",
+    "text": "How to Price Polymarket Up-Down Markets"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/beta-neutral-funding-arbitrage",
+    "text": "Beta Neutral Funding Arbitrage"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/how-market-making-models-work",
+    "text": "How Market Making Models work"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/introduction-to-option-market-making",
+    "text": "An Introduction to Option Market Making"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/degen-data-deep-dive",
+    "text": "Degen Data Deep Dive"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/statistical-arbitrage-on-uniswap",
+    "text": "Statistical Arbitrage on Uniswap v3 (Full Strategy)"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/the-life-changing-magic-of-concentrated",
+    "text": "The Life-Changing Magic of Concentrated Liquidity"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/roadmap-and-announcements",
+    "text": "Roadmap and Announcements"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/how-to-start-a-market-making-business",
+    "text": "How to Start a Market Making Business from Scratch"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/how-to-trade-the-volatility-smile",
+    "text": "How to Trade the Volatility Smile"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/a-full-guide-to-risk-management",
+    "text": "A Full Guide to Risk Management"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/are-greeks-beyond-the-third-order",
+    "text": "Are Greeks beyond the third order necessary?"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/avoiding-overfitting-and-colinearity",
+    "text": "Avoiding Overfitting and Colinearity with Regularization"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/option-pricing-basics",
+    "text": "Option Pricing Basics"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/volatility-arbitrage-how-to-start",
+    "text": "Volatility Arbitrage - How to Start"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/genetic-alpha-generation-part-2",
+    "text": "Genetic Alpha Generation - Part 2"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/genetic-alpha-generation-part-1",
+    "text": "Genetic Alpha Generation - Part 1"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/forecasting-runescape-prices",
+    "text": "Forecasting Runescape Prices"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/quant-model-selection",
+    "text": "Quant Model Selection"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/simple-ways-to-improve-strategy-performance",
+    "text": "Simple ways to improve Strategy Performance"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/market-making-toxicity-and-adverse",
+    "text": "Market Making - Toxicity and Adverse Selection"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/quantitative-finance-how-to-start",
+    "text": "Quantitative Finance - How to Start"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/event-driven-backtester-in-python",
+    "text": "Event-Driven Backtester in Python"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/market-making-models",
+    "text": "Market Making Models"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/funding-arbitrage-how-to-start",
+    "text": "Funding Arbitrage - How to Start"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/common-risk-metrics-pynl-part-1",
+    "text": "Common Risk Metrics (PyNL Part 1)"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/a-strategy-i-used-to-run-live",
+    "text": "A strategy I used to run live"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/an-informed-way-to-trade-momentum",
+    "text": "An informed way to trade Momentum"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/a-microstructural-volatility-model",
+    "text": "A Microstructural Volatility Model for Market Making"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/microstructural-features-for-market",
+    "text": "Microstructural Features for Market Making"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/triangular-arbitrage-scanner-building",
+    "text": "Triangular Arbitrage Scanner - Building it!"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/triangular-arbitrage-scanner-strategy",
+    "text": "Triangular Arbitrage Scanner - Strategy and Design"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/from-idea-to-live-trading-live-trading",
+    "text": "From Idea to Live Trading - Live Trading"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/from-idea-to-live-trading-monitoring",
+    "text": "From Idea to Live Trading - Monitoring Tools"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/from-idea-to-live-trading-the-strategy",
+    "text": "From Idea to Live Trading - The Strategy"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/creating-robust-strategies-advanced",
+    "text": "Creating Robust Strategies (Advanced Backtesting)"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/the-holy-grail-uncorrelated-strategies",
+    "text": "The Holy Grail: Uncorrelated Strategies"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/a-high-frequency-news-trading-strategy",
+    "text": "A High Frequency News Trading Strategy"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/sector-momentum-in-crypto-python",
+    "text": "Sector Momentum in Crypto (Python)"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/combining-trading-forecasts",
+    "text": "Combining Trading Forecasts"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/trading-on-prediction-markets",
+    "text": "Trading on Prediction Markets"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/frontrunning-uninformed-traders",
+    "text": "Frontrunning Uninformed Traders"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/simulating-price-movement-for-monte",
+    "text": "Simulating Price Movement for Monte Carlo Methods"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/harvesting-the-depegging-risk-premium",
+    "text": "Harvesting the Depegging Risk Premium"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/reducing-trading-cost",
+    "text": "Reducing Trading Costs"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/the-dance-of-volume-and-price",
+    "text": "The Dance of Volume and Price"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/fair-price-in-market-making",
+    "text": "Fair Price in Market Making"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/sports-betting-arbitrage-how-anyone",
+    "text": "Sports Betting Arbitrage - How anyone can make thousands"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/an-improved-market-making-strategy",
+    "text": "An improved Market Making Strategy"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/math-for-quant-finance-linear-algebra",
+    "text": "Math for Quant Finance (Linear Algebra)"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/math-for-quant-finance-calculus",
+    "text": "Math for Quant Finance (Calculus)"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/clustering-algorithms-an-in-depth",
+    "text": "Clustering Algorithms - An in-depth view"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/latency-arbitrage-how-to-start",
+    "text": "Latency Arbitrage - How to start"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/dollar-cost-averaging-done-right",
+    "text": "Dollar Cost Averaging done right"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/an-alternative-data-strategy",
+    "text": "An Alternative Data Strategy"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/binance-futures-arbitrage",
+    "text": "Binance Futures Arbitrage"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/factors-in-the-cryptocurrency-market",
+    "text": "Factors in the Cryptocurrency Market"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/event-based-momentum-and-mean-reversion",
+    "text": "Event Based Momentum and Mean Reversion"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/properties-of-the-limit-orderbook",
+    "text": "Behavior of the Limit Orderbook"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/combining-multiple-strategies-portfolio",
+    "text": "Combining Multiple Strategies - Portfolio Optimization"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/seasonality-and-volatility-risk-premium",
+    "text": "Seasonality and Volatility Risk Premium"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/market-making-how-to-start",
+    "text": "Market Making - How to start"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/twap-and-vwap-more-important-than",
+    "text": "TWAP & VWAP - More important than you think"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/orderbook-visualization-in-python",
+    "text": "Orderbook Visualization in Python"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/the-ornstein-uhlenbeck-process-a-0ec",
+    "text": "The Ornstein-Uhlenbeck Process - A deep dive - Part 3 (with code)"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/the-ornstein-uhlenbeck-process-a-6d9",
+    "text": "The Ornstein-Uhlenbeck Process - A deep dive - Part 2 (with code)"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/the-ornstein-uhlenbeck-process-a",
+    "text": "The Ornstein-Uhlenbeck Process - A deep dive - Part 1 (with code)"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/momentum-has-its-moments-with-code",
+    "text": "Momentum has its Moments (with Code)"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/a-strat-a-day-episode-3-turn-of-the",
+    "text": "A Strat a Day Episode 3 - Turn of the Month Effect"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/a-strat-a-day-episode-2-statistical",
+    "text": "A Strat a Day Episode 2 - Statistical Arbitrage using Crypto ETFs"
+  },
+  {
+    "href": "https://www.vertoxquant.com/p/a-strat-a-day-episode-1-momentum",
+    "text": "A Strat a Day Episode 1 - Momentum"
+  }
+]
