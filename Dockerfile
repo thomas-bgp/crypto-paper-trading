@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project
 COPY data/ data/
 COPY src/ src/
-COPY results/ results/
+RUN mkdir -p results
 
 # Persistent volume for paper trading state
 RUN mkdir -p paper_trading
