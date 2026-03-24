@@ -16,9 +16,8 @@ COPY data/ data/
 COPY src/ src/
 RUN mkdir -p results
 
-# Persistent volume for paper trading state
+# Paper trading state directory (managed by Coolify persistent storage)
 RUN mkdir -p paper_trading
-VOLUME /app/paper_trading
 
 # Expose dashboard port
 EXPOSE 5001
