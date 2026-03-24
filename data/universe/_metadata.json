@@ -1,0 +1,3260 @@
+[
+  {
+    "symbol": "BTCUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "BTC"
+  },
+  {
+    "symbol": "ETHUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "ETH"
+  },
+  {
+    "symbol": "BCHUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "BCH"
+  },
+  {
+    "symbol": "XRPUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "XRP"
+  },
+  {
+    "symbol": "LTCUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "LTC"
+  },
+  {
+    "symbol": "TRXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "TRX"
+  },
+  {
+    "symbol": "ETCUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "ETC"
+  },
+  {
+    "symbol": "LINKUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "LINK"
+  },
+  {
+    "symbol": "XLMUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "XLM"
+  },
+  {
+    "symbol": "ADAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "ADA"
+  },
+  {
+    "symbol": "XMRUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "XMR"
+  },
+  {
+    "symbol": "DASHUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "DASH"
+  },
+  {
+    "symbol": "ZECUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "ZEC"
+  },
+  {
+    "symbol": "XTZUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "XTZ"
+  },
+  {
+    "symbol": "BNBUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "BNB"
+  },
+  {
+    "symbol": "ATOMUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "ATOM"
+  },
+  {
+    "symbol": "ONTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "ONT"
+  },
+  {
+    "symbol": "IOTAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "IOTA"
+  },
+  {
+    "symbol": "BATUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "BAT"
+  },
+  {
+    "symbol": "VETUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "VET"
+  },
+  {
+    "symbol": "NEOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "NEO"
+  },
+  {
+    "symbol": "QTUMUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "QTUM"
+  },
+  {
+    "symbol": "IOSTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "IOST"
+  },
+  {
+    "symbol": "THETAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "THETA"
+  },
+  {
+    "symbol": "ALGOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "ALGO"
+  },
+  {
+    "symbol": "ZILUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "ZIL"
+  },
+  {
+    "symbol": "KNCUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "KNC"
+  },
+  {
+    "symbol": "ZRXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "ZRX"
+  },
+  {
+    "symbol": "COMPUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "COMP"
+  },
+  {
+    "symbol": "DOGEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "DOGE"
+  },
+  {
+    "symbol": "KAVAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "KAVA"
+  },
+  {
+    "symbol": "BANDUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "BAND"
+  },
+  {
+    "symbol": "RLCUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "RLC"
+  },
+  {
+    "symbol": "SNXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "SNX"
+  },
+  {
+    "symbol": "DOTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "DOT"
+  },
+  {
+    "symbol": "YFIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "YFI"
+  },
+  {
+    "symbol": "CRVUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "CRV"
+  },
+  {
+    "symbol": "TRBUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "TRB"
+  },
+  {
+    "symbol": "RUNEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "RUNE"
+  },
+  {
+    "symbol": "SUSHIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "SUSHI"
+  },
+  {
+    "symbol": "EGLDUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "EGLD"
+  },
+  {
+    "symbol": "SOLUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "SOL"
+  },
+  {
+    "symbol": "ICXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "ICX"
+  },
+  {
+    "symbol": "STORJUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "STORJ"
+  },
+  {
+    "symbol": "UNIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "UNI"
+  },
+  {
+    "symbol": "AVAXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "AVAX"
+  },
+  {
+    "symbol": "ENJUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "ENJ"
+  },
+  {
+    "symbol": "KSMUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "KSM"
+  },
+  {
+    "symbol": "NEARUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "NEAR"
+  },
+  {
+    "symbol": "AAVEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "AAVE"
+  },
+  {
+    "symbol": "FILUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "FIL"
+  },
+  {
+    "symbol": "RSRUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "RSR"
+  },
+  {
+    "symbol": "LRCUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "LRC"
+  },
+  {
+    "symbol": "BELUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "BEL"
+  },
+  {
+    "symbol": "AXSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "AXS"
+  },
+  {
+    "symbol": "ZENUSDT",
+    "status": "TRADING",
+    "onboardDate": 1569398400000,
+    "baseAsset": "ZEN"
+  },
+  {
+    "symbol": "SKLUSDT",
+    "status": "TRADING",
+    "onboardDate": 1598252400000,
+    "baseAsset": "SKL"
+  },
+  {
+    "symbol": "GRTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1608274800000,
+    "baseAsset": "GRT"
+  },
+  {
+    "symbol": "1INCHUSDT",
+    "status": "TRADING",
+    "onboardDate": 1608879600000,
+    "baseAsset": "1INCH"
+  },
+  {
+    "symbol": "CHZUSDT",
+    "status": "TRADING",
+    "onboardDate": 1611212400000,
+    "baseAsset": "CHZ"
+  },
+  {
+    "symbol": "SANDUSDT",
+    "status": "TRADING",
+    "onboardDate": 1610953200000,
+    "baseAsset": "SAND"
+  },
+  {
+    "symbol": "ANKRUSDT",
+    "status": "TRADING",
+    "onboardDate": 1611558000000,
+    "baseAsset": "ANKR"
+  },
+  {
+    "symbol": "RVNUSDT",
+    "status": "TRADING",
+    "onboardDate": 1614063600000,
+    "baseAsset": "RVN"
+  },
+  {
+    "symbol": "SFPUSDT",
+    "status": "TRADING",
+    "onboardDate": 1614150000000,
+    "baseAsset": "SFP"
+  },
+  {
+    "symbol": "COTIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1615273200000,
+    "baseAsset": "COTI"
+  },
+  {
+    "symbol": "CHRUSDT",
+    "status": "TRADING",
+    "onboardDate": 1615532400000,
+    "baseAsset": "CHR"
+  },
+  {
+    "symbol": "MANAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1615705200000,
+    "baseAsset": "MANA"
+  },
+  {
+    "symbol": "ALICEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1615791600000,
+    "baseAsset": "ALICE"
+  },
+  {
+    "symbol": "HBARUSDT",
+    "status": "TRADING",
+    "onboardDate": 1615964400000,
+    "baseAsset": "HBAR"
+  },
+  {
+    "symbol": "ONEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1615964400000,
+    "baseAsset": "ONE"
+  },
+  {
+    "symbol": "DENTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1616482800000,
+    "baseAsset": "DENT"
+  },
+  {
+    "symbol": "CELRUSDT",
+    "status": "TRADING",
+    "onboardDate": 1617001200000,
+    "baseAsset": "CELR"
+  },
+  {
+    "symbol": "HOTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1617087600000,
+    "baseAsset": "HOT"
+  },
+  {
+    "symbol": "MTLUSDT",
+    "status": "TRADING",
+    "onboardDate": 1617174000000,
+    "baseAsset": "MTL"
+  },
+  {
+    "symbol": "OGNUSDT",
+    "status": "TRADING",
+    "onboardDate": 1617174000000,
+    "baseAsset": "OGN"
+  },
+  {
+    "symbol": "1000SHIBUSDT",
+    "status": "TRADING",
+    "onboardDate": 1620630000000,
+    "baseAsset": "1000SHIB"
+  },
+  {
+    "symbol": "GTCUSDT",
+    "status": "TRADING",
+    "onboardDate": 1615791600000,
+    "baseAsset": "GTC"
+  },
+  {
+    "symbol": "BTCDOMUSDT",
+    "status": "TRADING",
+    "onboardDate": 1623913200000,
+    "baseAsset": "BTCDOM"
+  },
+  {
+    "symbol": "IOTXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1628665200000,
+    "baseAsset": "IOTX"
+  },
+  {
+    "symbol": "C98USDT",
+    "status": "TRADING",
+    "onboardDate": 1629702000000,
+    "baseAsset": "C98"
+  },
+  {
+    "symbol": "MASKUSDT",
+    "status": "TRADING",
+    "onboardDate": 1626418800000,
+    "baseAsset": "MASK"
+  },
+  {
+    "symbol": "ATAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1630306800000,
+    "baseAsset": "ATA"
+  },
+  {
+    "symbol": "DYDXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1631170800000,
+    "baseAsset": "DYDX"
+  },
+  {
+    "symbol": "1000XECUSDT",
+    "status": "TRADING",
+    "onboardDate": 1631775600000,
+    "baseAsset": "1000XEC"
+  },
+  {
+    "symbol": "GALAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1631862000000,
+    "baseAsset": "GALA"
+  },
+  {
+    "symbol": "CELOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1632639600000,
+    "baseAsset": "CELO"
+  },
+  {
+    "symbol": "ARUSDT",
+    "status": "TRADING",
+    "onboardDate": 1632812400000,
+    "baseAsset": "AR"
+  },
+  {
+    "symbol": "ARPAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1634540400000,
+    "baseAsset": "ARPA"
+  },
+  {
+    "symbol": "CTSIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1635145200000,
+    "baseAsset": "CTSI"
+  },
+  {
+    "symbol": "LPTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1636527600000,
+    "baseAsset": "LPT"
+  },
+  {
+    "symbol": "ENSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1638169200000,
+    "baseAsset": "ENS"
+  },
+  {
+    "symbol": "PEOPLEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1640242800000,
+    "baseAsset": "PEOPLE"
+  },
+  {
+    "symbol": "ROSEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1640934000000,
+    "baseAsset": "ROSE"
+  },
+  {
+    "symbol": "DUSKUSDT",
+    "status": "TRADING",
+    "onboardDate": 1641452400000,
+    "baseAsset": "DUSK"
+  },
+  {
+    "symbol": "FLOWUSDT",
+    "status": "TRADING",
+    "onboardDate": 1644390000000,
+    "baseAsset": "FLOW"
+  },
+  {
+    "symbol": "IMXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1644476400000,
+    "baseAsset": "IMX"
+  },
+  {
+    "symbol": "API3USDT",
+    "status": "TRADING",
+    "onboardDate": 1645426800000,
+    "baseAsset": "API3"
+  },
+  {
+    "symbol": "GMTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1647241200000,
+    "baseAsset": "GMT"
+  },
+  {
+    "symbol": "APEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1647500400000,
+    "baseAsset": "APE"
+  },
+  {
+    "symbol": "WOOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1649314800000,
+    "baseAsset": "WOO"
+  },
+  {
+    "symbol": "JASMYUSDT",
+    "status": "TRADING",
+    "onboardDate": 1650351600000,
+    "baseAsset": "JASMY"
+  },
+  {
+    "symbol": "OPUSDT",
+    "status": "TRADING",
+    "onboardDate": 1654066800000,
+    "baseAsset": "OP"
+  },
+  {
+    "symbol": "INJUSDT",
+    "status": "TRADING",
+    "onboardDate": 1660633200000,
+    "baseAsset": "INJ"
+  },
+  {
+    "symbol": "STGUSDT",
+    "status": "TRADING",
+    "onboardDate": 1661324400000,
+    "baseAsset": "STG"
+  },
+  {
+    "symbol": "SPELLUSDT",
+    "status": "TRADING",
+    "onboardDate": 1662361200000,
+    "baseAsset": "SPELL"
+  },
+  {
+    "symbol": "1000LUNCUSDT",
+    "status": "TRADING",
+    "onboardDate": 1662620400000,
+    "baseAsset": "1000LUNC"
+  },
+  {
+    "symbol": "LUNA2USDT",
+    "status": "TRADING",
+    "onboardDate": 1662706800000,
+    "baseAsset": "LUNA2"
+  },
+  {
+    "symbol": "LDOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1663743600000,
+    "baseAsset": "LDO"
+  },
+  {
+    "symbol": "ICPUSDT",
+    "status": "TRADING",
+    "onboardDate": 1627628400000,
+    "baseAsset": "ICP"
+  },
+  {
+    "symbol": "APTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1666076400000,
+    "baseAsset": "APT"
+  },
+  {
+    "symbol": "QNTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1666076400000,
+    "baseAsset": "QNT"
+  },
+  {
+    "symbol": "FETUSDT",
+    "status": "TRADING",
+    "onboardDate": 1673766000000,
+    "baseAsset": "FET"
+  },
+  {
+    "symbol": "HOOKUSDT",
+    "status": "TRADING",
+    "onboardDate": 1674111600000,
+    "baseAsset": "HOOK"
+  },
+  {
+    "symbol": "MAGICUSDT",
+    "status": "TRADING",
+    "onboardDate": 1674457200000,
+    "baseAsset": "MAGIC"
+  },
+  {
+    "symbol": "TUSDT",
+    "status": "TRADING",
+    "onboardDate": 1675148400000,
+    "baseAsset": "T"
+  },
+  {
+    "symbol": "HIGHUSDT",
+    "status": "TRADING",
+    "onboardDate": 1675407600000,
+    "baseAsset": "HIGH"
+  },
+  {
+    "symbol": "MINAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1675407600000,
+    "baseAsset": "MINA"
+  },
+  {
+    "symbol": "ASTRUSDT",
+    "status": "TRADING",
+    "onboardDate": 1676271600000,
+    "baseAsset": "ASTR"
+  },
+  {
+    "symbol": "PHBUSDT",
+    "status": "TRADING",
+    "onboardDate": 1676444400000,
+    "baseAsset": "PHB"
+  },
+  {
+    "symbol": "GMXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1676530800000,
+    "baseAsset": "GMX"
+  },
+  {
+    "symbol": "CFXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1676790000000,
+    "baseAsset": "CFX"
+  },
+  {
+    "symbol": "STXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1676876400000,
+    "baseAsset": "STX"
+  },
+  {
+    "symbol": "ACHUSDT",
+    "status": "TRADING",
+    "onboardDate": 1676962800000,
+    "baseAsset": "ACH"
+  },
+  {
+    "symbol": "SSVUSDT",
+    "status": "TRADING",
+    "onboardDate": 1677135600000,
+    "baseAsset": "SSV"
+  },
+  {
+    "symbol": "CKBUSDT",
+    "status": "TRADING",
+    "onboardDate": 1677481200000,
+    "baseAsset": "CKB"
+  },
+  {
+    "symbol": "TRUUSDT",
+    "status": "TRADING",
+    "onboardDate": 1678086000000,
+    "baseAsset": "TRU"
+  },
+  {
+    "symbol": "LQTYUSDT",
+    "status": "TRADING",
+    "onboardDate": 1678258800000,
+    "baseAsset": "LQTY"
+  },
+  {
+    "symbol": "IDUSDT",
+    "status": "TRADING",
+    "onboardDate": 1679529600000,
+    "baseAsset": "ID"
+  },
+  {
+    "symbol": "ARBUSDT",
+    "status": "TRADING",
+    "onboardDate": 1679554800000,
+    "baseAsset": "ARB"
+  },
+  {
+    "symbol": "JOEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1679961600000,
+    "baseAsset": "JOE"
+  },
+  {
+    "symbol": "TLMUSDT",
+    "status": "TRADING",
+    "onboardDate": 1680048000000,
+    "baseAsset": "TLM"
+  },
+  {
+    "symbol": "RDNTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1680566400000,
+    "baseAsset": "RDNT"
+  },
+  {
+    "symbol": "HFTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1680652800000,
+    "baseAsset": "HFT"
+  },
+  {
+    "symbol": "XVSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1681257600000,
+    "baseAsset": "XVS"
+  },
+  {
+    "symbol": "BLURUSDT",
+    "status": "TRADING",
+    "onboardDate": 1682553600000,
+    "baseAsset": "BLUR"
+  },
+  {
+    "symbol": "EDUUSDT",
+    "status": "TRADING",
+    "onboardDate": 1682640000000,
+    "baseAsset": "EDU"
+  },
+  {
+    "symbol": "SUIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1683072000000,
+    "baseAsset": "SUI"
+  },
+  {
+    "symbol": "1000PEPEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1683244800000,
+    "baseAsset": "1000PEPE"
+  },
+  {
+    "symbol": "1000FLOKIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1683331200000,
+    "baseAsset": "1000FLOKI"
+  },
+  {
+    "symbol": "UMAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1683590400000,
+    "baseAsset": "UMA"
+  },
+  {
+    "symbol": "NMRUSDT",
+    "status": "TRADING",
+    "onboardDate": 1687435200000,
+    "baseAsset": "NMR"
+  },
+  {
+    "symbol": "MAVUSDT",
+    "status": "TRADING",
+    "onboardDate": 1688040000000,
+    "baseAsset": "MAV"
+  },
+  {
+    "symbol": "XVGUSDT",
+    "status": "TRADING",
+    "onboardDate": 1688558400000,
+    "baseAsset": "XVG"
+  },
+  {
+    "symbol": "WLDUSDT",
+    "status": "TRADING",
+    "onboardDate": 1690200000000,
+    "baseAsset": "WLD"
+  },
+  {
+    "symbol": "PENDLEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1690511400000,
+    "baseAsset": "PENDLE"
+  },
+  {
+    "symbol": "ARKMUSDT",
+    "status": "TRADING",
+    "onboardDate": 1690512300000,
+    "baseAsset": "ARKM"
+  },
+  {
+    "symbol": "AGLDUSDT",
+    "status": "TRADING",
+    "onboardDate": 1690597800000,
+    "baseAsset": "AGLD"
+  },
+  {
+    "symbol": "YGGUSDT",
+    "status": "TRADING",
+    "onboardDate": 1691206200000,
+    "baseAsset": "YGG"
+  },
+  {
+    "symbol": "DODOXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1691496000000,
+    "baseAsset": "DODOX"
+  },
+  {
+    "symbol": "BNTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1691668800000,
+    "baseAsset": "BNT"
+  },
+  {
+    "symbol": "OXTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1691755200000,
+    "baseAsset": "OXT"
+  },
+  {
+    "symbol": "SEIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1692239400000,
+    "baseAsset": "SEI"
+  },
+  {
+    "symbol": "CYBERUSDT",
+    "status": "TRADING",
+    "onboardDate": 1692619200000,
+    "baseAsset": "CYBER"
+  },
+  {
+    "symbol": "ARKUSDT",
+    "status": "TRADING",
+    "onboardDate": 1695133800000,
+    "baseAsset": "ARK"
+  },
+  {
+    "symbol": "BICOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1695904200000,
+    "baseAsset": "BICO"
+  },
+  {
+    "symbol": "BIGTIMEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1697121000000,
+    "baseAsset": "BIGTIME"
+  },
+  {
+    "symbol": "WAXPUSDT",
+    "status": "TRADING",
+    "onboardDate": 1697640300000,
+    "baseAsset": "WAXP"
+  },
+  {
+    "symbol": "BSVUSDT",
+    "status": "TRADING",
+    "onboardDate": 1697805000000,
+    "baseAsset": "BSV"
+  },
+  {
+    "symbol": "RIFUSDT",
+    "status": "TRADING",
+    "onboardDate": 1697891400000,
+    "baseAsset": "RIF"
+  },
+  {
+    "symbol": "POLYXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1698201000000,
+    "baseAsset": "POLYX"
+  },
+  {
+    "symbol": "GASUSDT",
+    "status": "TRADING",
+    "onboardDate": 1698201900000,
+    "baseAsset": "GAS"
+  },
+  {
+    "symbol": "POWRUSDT",
+    "status": "TRADING",
+    "onboardDate": 1698373800000,
+    "baseAsset": "POWR"
+  },
+  {
+    "symbol": "TIAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1698769800000,
+    "baseAsset": "TIA"
+  },
+  {
+    "symbol": "CAKEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1698929100000,
+    "baseAsset": "CAKE"
+  },
+  {
+    "symbol": "MEMEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1699012800000,
+    "baseAsset": "MEME"
+  },
+  {
+    "symbol": "TWTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1699021800000,
+    "baseAsset": "TWT"
+  },
+  {
+    "symbol": "ORDIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1699360200000,
+    "baseAsset": "ORDI"
+  },
+  {
+    "symbol": "STEEMUSDT",
+    "status": "TRADING",
+    "onboardDate": 1699453800000,
+    "baseAsset": "STEEM"
+  },
+  {
+    "symbol": "ILVUSDT",
+    "status": "TRADING",
+    "onboardDate": 1699633800000,
+    "baseAsset": "ILV"
+  },
+  {
+    "symbol": "NTRNUSDT",
+    "status": "TRADING",
+    "onboardDate": 1699963200000,
+    "baseAsset": "NTRN"
+  },
+  {
+    "symbol": "KASUSDT",
+    "status": "TRADING",
+    "onboardDate": 1700186400000,
+    "baseAsset": "KAS"
+  },
+  {
+    "symbol": "BEAMXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1700227800000,
+    "baseAsset": "BEAMX"
+  },
+  {
+    "symbol": "1000BONKUSDT",
+    "status": "TRADING",
+    "onboardDate": 1700661600000,
+    "baseAsset": "1000BONK"
+  },
+  {
+    "symbol": "PYTHUSDT",
+    "status": "TRADING",
+    "onboardDate": 1700663400000,
+    "baseAsset": "PYTH"
+  },
+  {
+    "symbol": "SUPERUSDT",
+    "status": "TRADING",
+    "onboardDate": 1701003600000,
+    "baseAsset": "SUPER"
+  },
+  {
+    "symbol": "USTCUSDT",
+    "status": "TRADING",
+    "onboardDate": 1701088200000,
+    "baseAsset": "USTC"
+  },
+  {
+    "symbol": "ONGUSDT",
+    "status": "TRADING",
+    "onboardDate": 1701090000000,
+    "baseAsset": "ONG"
+  },
+  {
+    "symbol": "ETHWUSDT",
+    "status": "TRADING",
+    "onboardDate": 1701174600000,
+    "baseAsset": "ETHW"
+  },
+  {
+    "symbol": "JTOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1702029600000,
+    "baseAsset": "JTO"
+  },
+  {
+    "symbol": "1000SATSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1702389600000,
+    "baseAsset": "1000SATS"
+  },
+  {
+    "symbol": "AUCTIONUSDT",
+    "status": "TRADING",
+    "onboardDate": 1702645200000,
+    "baseAsset": "AUCTION"
+  },
+  {
+    "symbol": "1000RATSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1702648800000,
+    "baseAsset": "1000RATS"
+  },
+  {
+    "symbol": "ACEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1702893600000,
+    "baseAsset": "ACE"
+  },
+  {
+    "symbol": "MOVRUSDT",
+    "status": "TRADING",
+    "onboardDate": 1703593800000,
+    "baseAsset": "MOVR"
+  },
+  {
+    "symbol": "NFPUSDT",
+    "status": "TRADING",
+    "onboardDate": 1703680200000,
+    "baseAsset": "NFP"
+  },
+  {
+    "symbol": "AIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1704717000000,
+    "baseAsset": "AI"
+  },
+  {
+    "symbol": "XAIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1704808800000,
+    "baseAsset": "XAI"
+  },
+  {
+    "symbol": "WIFUSDT",
+    "status": "TRADING",
+    "onboardDate": 1705587300000,
+    "baseAsset": "WIF"
+  },
+  {
+    "symbol": "MANTAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1705586400000,
+    "baseAsset": "MANTA"
+  },
+  {
+    "symbol": "ONDOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1705755600000,
+    "baseAsset": "ONDO"
+  },
+  {
+    "symbol": "LSKUSDT",
+    "status": "TRADING",
+    "onboardDate": 1706192100000,
+    "baseAsset": "LSK"
+  },
+  {
+    "symbol": "ALTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1706191200000,
+    "baseAsset": "ALT"
+  },
+  {
+    "symbol": "ZETAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1706862600000,
+    "baseAsset": "ZETA"
+  },
+  {
+    "symbol": "RONINUSDT",
+    "status": "TRADING",
+    "onboardDate": 1707193800000,
+    "baseAsset": "RONIN"
+  },
+  {
+    "symbol": "DYMUSDT",
+    "status": "TRADING",
+    "onboardDate": 1707289200000,
+    "baseAsset": "DYM"
+  },
+  {
+    "symbol": "PIXELUSDT",
+    "status": "TRADING",
+    "onboardDate": 1708354800000,
+    "baseAsset": "PIXEL"
+  },
+  {
+    "symbol": "STRKUSDT",
+    "status": "TRADING",
+    "onboardDate": 1708448400000,
+    "baseAsset": "STRK"
+  },
+  {
+    "symbol": "GLMUSDT",
+    "status": "TRADING",
+    "onboardDate": 1708596000000,
+    "baseAsset": "GLM"
+  },
+  {
+    "symbol": "PORTALUSDT",
+    "status": "TRADING",
+    "onboardDate": 1709218800000,
+    "baseAsset": "PORTAL"
+  },
+  {
+    "symbol": "TONUSDT",
+    "status": "TRADING",
+    "onboardDate": 1709296200000,
+    "baseAsset": "TON"
+  },
+  {
+    "symbol": "AXLUSDT",
+    "status": "TRADING",
+    "onboardDate": 1709307000000,
+    "baseAsset": "AXL"
+  },
+  {
+    "symbol": "METISUSDT",
+    "status": "TRADING",
+    "onboardDate": 1710232200000,
+    "baseAsset": "METIS"
+  },
+  {
+    "symbol": "AEVOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1710336600000,
+    "baseAsset": "AEVO"
+  },
+  {
+    "symbol": "VANRYUSDT",
+    "status": "TRADING",
+    "onboardDate": 1710351000000,
+    "baseAsset": "VANRY"
+  },
+  {
+    "symbol": "BOMEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1710592200000,
+    "baseAsset": "BOME"
+  },
+  {
+    "symbol": "ETHFIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1710775800000,
+    "baseAsset": "ETHFI"
+  },
+  {
+    "symbol": "ENAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1712061000000,
+    "baseAsset": "ENA"
+  },
+  {
+    "symbol": "WUSDT",
+    "status": "TRADING",
+    "onboardDate": 1712158200000,
+    "baseAsset": "W"
+  },
+  {
+    "symbol": "TNSRUSDT",
+    "status": "TRADING",
+    "onboardDate": 1712595600000,
+    "baseAsset": "TNSR"
+  },
+  {
+    "symbol": "SAGAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1712658600000,
+    "baseAsset": "SAGA"
+  },
+  {
+    "symbol": "TAOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1712845800000,
+    "baseAsset": "TAO"
+  },
+  {
+    "symbol": "REZUSDT",
+    "status": "TRADING",
+    "onboardDate": 1714485600000,
+    "baseAsset": "REZ"
+  },
+  {
+    "symbol": "BBUSDT",
+    "status": "TRADING",
+    "onboardDate": 1715603400000,
+    "baseAsset": "BB"
+  },
+  {
+    "symbol": "NOTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1715868000000,
+    "baseAsset": "NOT"
+  },
+  {
+    "symbol": "TURBOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1717083000000,
+    "baseAsset": "TURBO"
+  },
+  {
+    "symbol": "IOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1718114400000,
+    "baseAsset": "IO"
+  },
+  {
+    "symbol": "ZKUSDT",
+    "status": "TRADING",
+    "onboardDate": 1718622000000,
+    "baseAsset": "ZK"
+  },
+  {
+    "symbol": "MEWUSDT",
+    "status": "TRADING",
+    "onboardDate": 1718632800000,
+    "baseAsset": "MEW"
+  },
+  {
+    "symbol": "LISTAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1718886600000,
+    "baseAsset": "LISTA"
+  },
+  {
+    "symbol": "ZROUSDT",
+    "status": "TRADING",
+    "onboardDate": 1718893800000,
+    "baseAsset": "ZRO"
+  },
+  {
+    "symbol": "RENDERUSDT",
+    "status": "TRADING",
+    "onboardDate": 1721988000000,
+    "baseAsset": "RENDER"
+  },
+  {
+    "symbol": "BANANAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1723687200000,
+    "baseAsset": "BANANA"
+  },
+  {
+    "symbol": "RAREUSDT",
+    "status": "TRADING",
+    "onboardDate": 1723726800000,
+    "baseAsset": "RARE"
+  },
+  {
+    "symbol": "GUSDT",
+    "status": "TRADING",
+    "onboardDate": 1723725000000,
+    "baseAsset": "G"
+  },
+  {
+    "symbol": "SYNUSDT",
+    "status": "TRADING",
+    "onboardDate": 1723811400000,
+    "baseAsset": "SYN"
+  },
+  {
+    "symbol": "SYSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1724070600000,
+    "baseAsset": "SYS"
+  },
+  {
+    "symbol": "BRETTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1724150100000,
+    "baseAsset": "BRETT"
+  },
+  {
+    "symbol": "POPCATUSDT",
+    "status": "TRADING",
+    "onboardDate": 1724331600000,
+    "baseAsset": "POPCAT"
+  },
+  {
+    "symbol": "SUNUSDT",
+    "status": "TRADING",
+    "onboardDate": 1724331900000,
+    "baseAsset": "SUN"
+  },
+  {
+    "symbol": "DOGSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1724675400000,
+    "baseAsset": "DOGS"
+  },
+  {
+    "symbol": "MBOXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1724837400000,
+    "baseAsset": "MBOX"
+  },
+  {
+    "symbol": "FLUXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1725346800000,
+    "baseAsset": "FLUX"
+  },
+  {
+    "symbol": "RPLUSDT",
+    "status": "TRADING",
+    "onboardDate": 1725885000000,
+    "baseAsset": "RPL"
+  },
+  {
+    "symbol": "POLUSDT",
+    "status": "TRADING",
+    "onboardDate": 1726229700000,
+    "baseAsset": "POL"
+  },
+  {
+    "symbol": "1MBABYDOGEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1726486500000,
+    "baseAsset": "1MBABYDOGE"
+  },
+  {
+    "symbol": "NEIROUSDT",
+    "status": "TRADING",
+    "onboardDate": 1726486200000,
+    "baseAsset": "NEIRO"
+  },
+  {
+    "symbol": "FIDAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1726749000000,
+    "baseAsset": "FIDA"
+  },
+  {
+    "symbol": "FIOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1726831800000,
+    "baseAsset": "FIO"
+  },
+  {
+    "symbol": "CATIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1726831800000,
+    "baseAsset": "CATI"
+  },
+  {
+    "symbol": "HMSTRUSDT",
+    "status": "TRADING",
+    "onboardDate": 1727353800000,
+    "baseAsset": "HMSTR"
+  },
+  {
+    "symbol": "COSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1727701200000,
+    "baseAsset": "COS"
+  },
+  {
+    "symbol": "EIGENUSDT",
+    "status": "TRADING",
+    "onboardDate": 1727762400000,
+    "baseAsset": "EIGEN"
+  },
+  {
+    "symbol": "DIAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1727872200000,
+    "baseAsset": "DIA"
+  },
+  {
+    "symbol": "1000CATUSDT",
+    "status": "TRADING",
+    "onboardDate": 1729513800000,
+    "baseAsset": "1000CAT"
+  },
+  {
+    "symbol": "SCRUSDT",
+    "status": "TRADING",
+    "onboardDate": 1729591200000,
+    "baseAsset": "SCR"
+  },
+  {
+    "symbol": "GOATUSDT",
+    "status": "TRADING",
+    "onboardDate": 1729776600000,
+    "baseAsset": "GOAT"
+  },
+  {
+    "symbol": "MOODENGUSDT",
+    "status": "TRADING",
+    "onboardDate": 1729850400000,
+    "baseAsset": "MOODENG"
+  },
+  {
+    "symbol": "SAFEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1729859400000,
+    "baseAsset": "SAFE"
+  },
+  {
+    "symbol": "SANTOSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1730124000000,
+    "baseAsset": "SANTOS"
+  },
+  {
+    "symbol": "COWUSDT",
+    "status": "TRADING",
+    "onboardDate": 1730899800000,
+    "baseAsset": "COW"
+  },
+  {
+    "symbol": "CETUSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1730901600000,
+    "baseAsset": "CETUS"
+  },
+  {
+    "symbol": "1000000MOGUSDT",
+    "status": "TRADING",
+    "onboardDate": 1730982600000,
+    "baseAsset": "1000000MOG"
+  },
+  {
+    "symbol": "GRASSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1731079800000,
+    "baseAsset": "GRASS"
+  },
+  {
+    "symbol": "DRIFTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1731081600000,
+    "baseAsset": "DRIFT"
+  },
+  {
+    "symbol": "ACTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1731327300000,
+    "baseAsset": "ACT"
+  },
+  {
+    "symbol": "PNUTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1731327300000,
+    "baseAsset": "PNUT"
+  },
+  {
+    "symbol": "HIPPOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1731501000000,
+    "baseAsset": "HIPPO"
+  },
+  {
+    "symbol": "DEGENUSDT",
+    "status": "TRADING",
+    "onboardDate": 1731670200000,
+    "baseAsset": "DEGEN"
+  },
+  {
+    "symbol": "BANUSDT",
+    "status": "TRADING",
+    "onboardDate": 1731929400000,
+    "baseAsset": "BAN"
+  },
+  {
+    "symbol": "AKTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1731929400000,
+    "baseAsset": "AKT"
+  },
+  {
+    "symbol": "SCRTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1732188600000,
+    "baseAsset": "SCRT"
+  },
+  {
+    "symbol": "1000CHEEMSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1732535100000,
+    "baseAsset": "1000CHEEMS"
+  },
+  {
+    "symbol": "1000WHYUSDT",
+    "status": "TRADING",
+    "onboardDate": 1732534200000,
+    "baseAsset": "1000WHY"
+  },
+  {
+    "symbol": "THEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1732709700000,
+    "baseAsset": "THE"
+  },
+  {
+    "symbol": "MORPHOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1732717800000,
+    "baseAsset": "MORPHO"
+  },
+  {
+    "symbol": "CHILLGUYUSDT",
+    "status": "TRADING",
+    "onboardDate": 1732718700000,
+    "baseAsset": "CHILLGUY"
+  },
+  {
+    "symbol": "KAIAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1733320800000,
+    "baseAsset": "KAIA"
+  },
+  {
+    "symbol": "AEROUSDT",
+    "status": "TRADING",
+    "onboardDate": 1733321700000,
+    "baseAsset": "AERO"
+  },
+  {
+    "symbol": "ACXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1733497200000,
+    "baseAsset": "ACX"
+  },
+  {
+    "symbol": "ORCAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1733497200000,
+    "baseAsset": "ORCA"
+  },
+  {
+    "symbol": "MOVEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1733752800000,
+    "baseAsset": "MOVE"
+  },
+  {
+    "symbol": "RAYSOLUSDT",
+    "status": "TRADING",
+    "onboardDate": 1733832000000,
+    "baseAsset": "RAYSOL"
+  },
+  {
+    "symbol": "KOMAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1733832900000,
+    "baseAsset": "KOMA"
+  },
+  {
+    "symbol": "VIRTUALUSDT",
+    "status": "TRADING",
+    "onboardDate": 1733833800000,
+    "baseAsset": "VIRTUAL"
+  },
+  {
+    "symbol": "SPXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1733834700000,
+    "baseAsset": "SPX"
+  },
+  {
+    "symbol": "MEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1733850000000,
+    "baseAsset": "ME"
+  },
+  {
+    "symbol": "AVAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1734094800000,
+    "baseAsset": "AVA"
+  },
+  {
+    "symbol": "DEGOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1734095700000,
+    "baseAsset": "DEGO"
+  },
+  {
+    "symbol": "VELODROMEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1734106500000,
+    "baseAsset": "VELODROME"
+  },
+  {
+    "symbol": "MOCAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1734348600000,
+    "baseAsset": "MOCA"
+  },
+  {
+    "symbol": "VANAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1734355800000,
+    "baseAsset": "VANA"
+  },
+  {
+    "symbol": "PENGUUSDT",
+    "status": "TRADING",
+    "onboardDate": 1734452100000,
+    "baseAsset": "PENGU"
+  },
+  {
+    "symbol": "LUMIAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1734521400000,
+    "baseAsset": "LUMIA"
+  },
+  {
+    "symbol": "USUALUSDT",
+    "status": "TRADING",
+    "onboardDate": 1734526800000,
+    "baseAsset": "USUAL"
+  },
+  {
+    "symbol": "AIXBTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1734719400000,
+    "baseAsset": "AIXBT"
+  },
+  {
+    "symbol": "FARTCOINUSDT",
+    "status": "TRADING",
+    "onboardDate": 1734720300000,
+    "baseAsset": "FARTCOIN"
+  },
+  {
+    "symbol": "KMNOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1734721200000,
+    "baseAsset": "KMNO"
+  },
+  {
+    "symbol": "CGPTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1734722100000,
+    "baseAsset": "CGPT"
+  },
+  {
+    "symbol": "HIVEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1734953400000,
+    "baseAsset": "HIVE"
+  },
+  {
+    "symbol": "DEXEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1735039800000,
+    "baseAsset": "DEXE"
+  },
+  {
+    "symbol": "PHAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1735558200000,
+    "baseAsset": "PHA"
+  },
+  {
+    "symbol": "GRIFFAINUSDT",
+    "status": "TRADING",
+    "onboardDate": 1735824600000,
+    "baseAsset": "GRIFFAIN"
+  },
+  {
+    "symbol": "ZEREBROUSDT",
+    "status": "TRADING",
+    "onboardDate": 1735826400000,
+    "baseAsset": "ZEREBRO"
+  },
+  {
+    "symbol": "BIOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1735906500000,
+    "baseAsset": "BIO"
+  },
+  {
+    "symbol": "COOKIEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1736249400000,
+    "baseAsset": "COOKIE"
+  },
+  {
+    "symbol": "ALCHUSDT",
+    "status": "TRADING",
+    "onboardDate": 1736250300000,
+    "baseAsset": "ALCH"
+  },
+  {
+    "symbol": "SWARMSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1736252100000,
+    "baseAsset": "SWARMS"
+  },
+  {
+    "symbol": "SONICUSDT",
+    "status": "TRADING",
+    "onboardDate": 1736319600000,
+    "baseAsset": "SONIC"
+  },
+  {
+    "symbol": "DUSDT",
+    "status": "TRADING",
+    "onboardDate": 1736416800000,
+    "baseAsset": "D"
+  },
+  {
+    "symbol": "PROMUSDT",
+    "status": "TRADING",
+    "onboardDate": 1736944200000,
+    "baseAsset": "PROM"
+  },
+  {
+    "symbol": "SUSDT",
+    "status": "TRADING",
+    "onboardDate": 1737021600000,
+    "baseAsset": "S"
+  },
+  {
+    "symbol": "SOLVUSDT",
+    "status": "TRADING",
+    "onboardDate": 1737116100000,
+    "baseAsset": "SOLV"
+  },
+  {
+    "symbol": "ARCUSDT",
+    "status": "TRADING",
+    "onboardDate": 1737118800000,
+    "baseAsset": "ARC"
+  },
+  {
+    "symbol": "AVAAIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1737119700000,
+    "baseAsset": "AVAAI"
+  },
+  {
+    "symbol": "TRUMPUSDT",
+    "status": "TRADING",
+    "onboardDate": 1737205200000,
+    "baseAsset": "TRUMP"
+  },
+  {
+    "symbol": "MELANIAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1737365400000,
+    "baseAsset": "MELANIA"
+  },
+  {
+    "symbol": "VTHOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1737538200000,
+    "baseAsset": "VTHO"
+  },
+  {
+    "symbol": "ANIMEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1737651600000,
+    "baseAsset": "ANIME"
+  },
+  {
+    "symbol": "VINEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1737712800000,
+    "baseAsset": "VINE"
+  },
+  {
+    "symbol": "PIPPINUSDT",
+    "status": "TRADING",
+    "onboardDate": 1737713700000,
+    "baseAsset": "PIPPIN"
+  },
+  {
+    "symbol": "VVVUSDT",
+    "status": "TRADING",
+    "onboardDate": 1738138500000,
+    "baseAsset": "VVV"
+  },
+  {
+    "symbol": "BERAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1738854000000,
+    "baseAsset": "BERA"
+  },
+  {
+    "symbol": "TSTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1739106000000,
+    "baseAsset": "TST"
+  },
+  {
+    "symbol": "LAYERUSDT",
+    "status": "TRADING",
+    "onboardDate": 1739288700000,
+    "baseAsset": "LAYER"
+  },
+  {
+    "symbol": "HEIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1739437200000,
+    "baseAsset": "HEI"
+  },
+  {
+    "symbol": "B3USDT",
+    "status": "TRADING",
+    "onboardDate": 1739446200000,
+    "baseAsset": "B3"
+  },
+  {
+    "symbol": "IPUSDT",
+    "status": "TRADING",
+    "onboardDate": 1739466000000,
+    "baseAsset": "IP"
+  },
+  {
+    "symbol": "GPSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1739811600000,
+    "baseAsset": "GPS"
+  },
+  {
+    "symbol": "SHELLUSDT",
+    "status": "TRADING",
+    "onboardDate": 1739812500000,
+    "baseAsset": "SHELL"
+  },
+  {
+    "symbol": "KAITOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1740056400000,
+    "baseAsset": "KAITO"
+  },
+  {
+    "symbol": "REDUSDT",
+    "status": "TRADING",
+    "onboardDate": 1741276800000,
+    "baseAsset": "RED"
+  },
+  {
+    "symbol": "VICUSDT",
+    "status": "TRADING",
+    "onboardDate": 1741798800000,
+    "baseAsset": "VIC"
+  },
+  {
+    "symbol": "EPICUSDT",
+    "status": "TRADING",
+    "onboardDate": 1741852800000,
+    "baseAsset": "EPIC"
+  },
+  {
+    "symbol": "BMTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1742218200000,
+    "baseAsset": "BMT"
+  },
+  {
+    "symbol": "MUBARAKUSDT",
+    "status": "TRADING",
+    "onboardDate": 1742219100000,
+    "baseAsset": "MUBARAK"
+  },
+  {
+    "symbol": "FORMUSDT",
+    "status": "TRADING",
+    "onboardDate": 1742371200000,
+    "baseAsset": "FORM"
+  },
+  {
+    "symbol": "TUTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1742461200000,
+    "baseAsset": "TUT"
+  },
+  {
+    "symbol": "BROCCOLI714USDT",
+    "status": "TRADING",
+    "onboardDate": 1742547600000,
+    "baseAsset": "BROCCOLI714"
+  },
+  {
+    "symbol": "BROCCOLIF3BUSDT",
+    "status": "TRADING",
+    "onboardDate": 1742548500000,
+    "baseAsset": "BROCCOLIF3B"
+  },
+  {
+    "symbol": "SIRENUSDT",
+    "status": "TRADING",
+    "onboardDate": 1742634000000,
+    "baseAsset": "SIREN"
+  },
+  {
+    "symbol": "BANANAS31USDT",
+    "status": "TRADING",
+    "onboardDate": 1742634900000,
+    "baseAsset": "BANANAS31"
+  },
+  {
+    "symbol": "BRUSDT",
+    "status": "TRADING",
+    "onboardDate": 1742561100000,
+    "baseAsset": "BR"
+  },
+  {
+    "symbol": "PLUMEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1742562000000,
+    "baseAsset": "PLUME"
+  },
+  {
+    "symbol": "NILUSDT",
+    "status": "TRADING",
+    "onboardDate": 1742821200000,
+    "baseAsset": "NIL"
+  },
+  {
+    "symbol": "PARTIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1742907600000,
+    "baseAsset": "PARTI"
+  },
+  {
+    "symbol": "JELLYJELLYUSDT",
+    "status": "TRADING",
+    "onboardDate": 1743004800000,
+    "baseAsset": "JELLYJELLY"
+  },
+  {
+    "symbol": "MAVIAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1743005700000,
+    "baseAsset": "MAVIA"
+  },
+  {
+    "symbol": "PAXGUSDT",
+    "status": "TRADING",
+    "onboardDate": 1743071400000,
+    "baseAsset": "PAXG"
+  },
+  {
+    "symbol": "WALUSDT",
+    "status": "TRADING",
+    "onboardDate": 1743089400000,
+    "baseAsset": "WAL"
+  },
+  {
+    "symbol": "FUNUSDT",
+    "status": "TRADING",
+    "onboardDate": 1743409800000,
+    "baseAsset": "FUN"
+  },
+  {
+    "symbol": "MLNUSDT",
+    "status": "TRADING",
+    "onboardDate": 1743410700000,
+    "baseAsset": "MLN"
+  },
+  {
+    "symbol": "GUNUSDT",
+    "status": "TRADING",
+    "onboardDate": 1743426000000,
+    "baseAsset": "GUN"
+  },
+  {
+    "symbol": "ATHUSDT",
+    "status": "TRADING",
+    "onboardDate": 1743608700000,
+    "baseAsset": "ATH"
+  },
+  {
+    "symbol": "BABYUSDT",
+    "status": "TRADING",
+    "onboardDate": 1743859800000,
+    "baseAsset": "BABY"
+  },
+  {
+    "symbol": "FORTHUSDT",
+    "status": "TRADING",
+    "onboardDate": 1744101000000,
+    "baseAsset": "FORTH"
+  },
+  {
+    "symbol": "PROMPTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1744353000000,
+    "baseAsset": "PROMPT"
+  },
+  {
+    "symbol": "STOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1744469100000,
+    "baseAsset": "STO"
+  },
+  {
+    "symbol": "FHEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1744470000000,
+    "baseAsset": "FHE"
+  },
+  {
+    "symbol": "KERNELUSDT",
+    "status": "TRADING",
+    "onboardDate": 1744632000000,
+    "baseAsset": "KERNEL"
+  },
+  {
+    "symbol": "WCTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1744714800000,
+    "baseAsset": "WCT"
+  },
+  {
+    "symbol": "INITUSDT",
+    "status": "TRADING",
+    "onboardDate": 1744785000000,
+    "baseAsset": "INIT"
+  },
+  {
+    "symbol": "AERGOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1744801200000,
+    "baseAsset": "AERGO"
+  },
+  {
+    "symbol": "BANKUSDT",
+    "status": "TRADING",
+    "onboardDate": 1745001000000,
+    "baseAsset": "BANK"
+  },
+  {
+    "symbol": "DEEPUSDT",
+    "status": "TRADING",
+    "onboardDate": 1745310600000,
+    "baseAsset": "DEEP"
+  },
+  {
+    "symbol": "HYPERUSDT",
+    "status": "TRADING",
+    "onboardDate": 1745326800000,
+    "baseAsset": "HYPER"
+  },
+  {
+    "symbol": "JSTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1745832600000,
+    "baseAsset": "JST"
+  },
+  {
+    "symbol": "SIGNUSDT",
+    "status": "TRADING",
+    "onboardDate": 1745838000000,
+    "baseAsset": "SIGN"
+  },
+  {
+    "symbol": "PUNDIXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1746007200000,
+    "baseAsset": "PUNDIX"
+  },
+  {
+    "symbol": "CTKUSDT",
+    "status": "TRADING",
+    "onboardDate": 1746008100000,
+    "baseAsset": "CTK"
+  },
+  {
+    "symbol": "AIOTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1746016200000,
+    "baseAsset": "AIOT"
+  },
+  {
+    "symbol": "DOLOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1746068400000,
+    "baseAsset": "DOLO"
+  },
+  {
+    "symbol": "HAEDALUSDT",
+    "status": "TRADING",
+    "onboardDate": 1746069300000,
+    "baseAsset": "HAEDAL"
+  },
+  {
+    "symbol": "SXTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1746174600000,
+    "baseAsset": "SXT"
+  },
+  {
+    "symbol": "ASRUSDT",
+    "status": "TRADING",
+    "onboardDate": 1746523800000,
+    "baseAsset": "ASR"
+  },
+  {
+    "symbol": "ALPINEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1746524700000,
+    "baseAsset": "ALPINE"
+  },
+  {
+    "symbol": "B2USDT",
+    "status": "TRADING",
+    "onboardDate": 1746538200000,
+    "baseAsset": "B2"
+  },
+  {
+    "symbol": "DOODUSDT",
+    "status": "TRADING",
+    "onboardDate": 1746797400000,
+    "baseAsset": "DOOD"
+  },
+  {
+    "symbol": "OGUSDT",
+    "status": "TRADING",
+    "onboardDate": 1747040400000,
+    "baseAsset": "OG"
+  },
+  {
+    "symbol": "ZKJUSDT",
+    "status": "TRADING",
+    "onboardDate": 1747128600000,
+    "baseAsset": "ZKJ"
+  },
+  {
+    "symbol": "SKYAIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1747129500000,
+    "baseAsset": "SKYAI"
+  },
+  {
+    "symbol": "NXPCUSDT",
+    "status": "TRADING",
+    "onboardDate": 1747290600000,
+    "baseAsset": "NXPC"
+  },
+  {
+    "symbol": "CVCUSDT",
+    "status": "TRADING",
+    "onboardDate": 1747384200000,
+    "baseAsset": "CVC"
+  },
+  {
+    "symbol": "AGTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1747737000000,
+    "baseAsset": "AGT"
+  },
+  {
+    "symbol": "AWEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1747814400000,
+    "baseAsset": "AWE"
+  },
+  {
+    "symbol": "BUSDT",
+    "status": "TRADING",
+    "onboardDate": 1747931400000,
+    "baseAsset": "B"
+  },
+  {
+    "symbol": "SOONUSDT",
+    "status": "TRADING",
+    "onboardDate": 1747989000000,
+    "baseAsset": "SOON"
+  },
+  {
+    "symbol": "HUMAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1748264400000,
+    "baseAsset": "HUMA"
+  },
+  {
+    "symbol": "AUSDT",
+    "status": "TRADING",
+    "onboardDate": 1748419200000,
+    "baseAsset": "A"
+  },
+  {
+    "symbol": "SOPHUSDT",
+    "status": "TRADING",
+    "onboardDate": 1748437200000,
+    "baseAsset": "SOPH"
+  },
+  {
+    "symbol": "MERLUSDT",
+    "status": "TRADING",
+    "onboardDate": 1748507400000,
+    "baseAsset": "MERL"
+  },
+  {
+    "symbol": "HYPEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1748601000000,
+    "baseAsset": "HYPE"
+  },
+  {
+    "symbol": "BDXNUSDT",
+    "status": "TRADING",
+    "onboardDate": 1748946600000,
+    "baseAsset": "BDXN"
+  },
+  {
+    "symbol": "PUFFERUSDT",
+    "status": "TRADING",
+    "onboardDate": 1749025800000,
+    "baseAsset": "PUFFER"
+  },
+  {
+    "symbol": "1000000BOBUSDT",
+    "status": "TRADING",
+    "onboardDate": 1749112200000,
+    "baseAsset": "1000000BOB"
+  },
+  {
+    "symbol": "LAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1749114000000,
+    "baseAsset": "LA"
+  },
+  {
+    "symbol": "HOMEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1749555000000,
+    "baseAsset": "HOME"
+  },
+  {
+    "symbol": "RESOLVUSDT",
+    "status": "TRADING",
+    "onboardDate": 1749562200000,
+    "baseAsset": "RESOLV"
+  },
+  {
+    "symbol": "TAIKOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1749645000000,
+    "baseAsset": "TAIKO"
+  },
+  {
+    "symbol": "SQDUSDT",
+    "status": "TRADING",
+    "onboardDate": 1749645900000,
+    "baseAsset": "SQD"
+  },
+  {
+    "symbol": "PUMPBTCUSDT",
+    "status": "TRADING",
+    "onboardDate": 1749808800000,
+    "baseAsset": "PUMPBTC"
+  },
+  {
+    "symbol": "SPKUSDT",
+    "status": "TRADING",
+    "onboardDate": 1750150800000,
+    "baseAsset": "SPK"
+  },
+  {
+    "symbol": "MYXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1750249800000,
+    "baseAsset": "MYX"
+  },
+  {
+    "symbol": "FUSDT",
+    "status": "TRADING",
+    "onboardDate": 1750250700000,
+    "baseAsset": "F"
+  },
+  {
+    "symbol": "NEWTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1750343400000,
+    "baseAsset": "NEWT"
+  },
+  {
+    "symbol": "HUSDT",
+    "status": "TRADING",
+    "onboardDate": 1750843800000,
+    "baseAsset": "H"
+  },
+  {
+    "symbol": "OLUSDT",
+    "status": "TRADING",
+    "onboardDate": 1750851000000,
+    "baseAsset": "OL"
+  },
+  {
+    "symbol": "SAHARAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1750939200000,
+    "baseAsset": "SAHARA"
+  },
+  {
+    "symbol": "ICNTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1751547600000,
+    "baseAsset": "ICNT"
+  },
+  {
+    "symbol": "BULLAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1751619600000,
+    "baseAsset": "BULLA"
+  },
+  {
+    "symbol": "IDOLUSDT",
+    "status": "TRADING",
+    "onboardDate": 1751620500000,
+    "baseAsset": "IDOL"
+  },
+  {
+    "symbol": "MUSDT",
+    "status": "TRADING",
+    "onboardDate": 1751880600000,
+    "baseAsset": "M"
+  },
+  {
+    "symbol": "PUMPUSDT",
+    "status": "TRADING",
+    "onboardDate": 1752132600000,
+    "baseAsset": "PUMP"
+  },
+  {
+    "symbol": "CROSSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1752143400000,
+    "baseAsset": "CROSS"
+  },
+  {
+    "symbol": "AINUSDT",
+    "status": "TRADING",
+    "onboardDate": 1752144300000,
+    "baseAsset": "AIN"
+  },
+  {
+    "symbol": "CUSDT",
+    "status": "TRADING",
+    "onboardDate": 1752570000000,
+    "baseAsset": "C"
+  },
+  {
+    "symbol": "VELVETUSDT",
+    "status": "TRADING",
+    "onboardDate": 1752570900000,
+    "baseAsset": "VELVET"
+  },
+  {
+    "symbol": "TACUSDT",
+    "status": "TRADING",
+    "onboardDate": 1752575400000,
+    "baseAsset": "TAC"
+  },
+  {
+    "symbol": "ERAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1752759000000,
+    "baseAsset": "ERA"
+  },
+  {
+    "symbol": "TAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1753083000000,
+    "baseAsset": "TA"
+  },
+  {
+    "symbol": "CVXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1753270200000,
+    "baseAsset": "CVX"
+  },
+  {
+    "symbol": "SLPUSDT",
+    "status": "TRADING",
+    "onboardDate": 1753271100000,
+    "baseAsset": "SLP"
+  },
+  {
+    "symbol": "ZORAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1753441200000,
+    "baseAsset": "ZORA"
+  },
+  {
+    "symbol": "TAGUSDT",
+    "status": "TRADING",
+    "onboardDate": 1753442100000,
+    "baseAsset": "TAG"
+  },
+  {
+    "symbol": "ESPORTSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1753783200000,
+    "baseAsset": "ESPORTS"
+  },
+  {
+    "symbol": "TREEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1753797600000,
+    "baseAsset": "TREE"
+  },
+  {
+    "symbol": "A2ZUSDT",
+    "status": "TRADING",
+    "onboardDate": 1753862400000,
+    "baseAsset": "A2Z"
+  },
+  {
+    "symbol": "PLAYUSDT",
+    "status": "TRADING",
+    "onboardDate": 1753954200000,
+    "baseAsset": "PLAY"
+  },
+  {
+    "symbol": "NAORISUSDT",
+    "status": "TRADING",
+    "onboardDate": 1753965000000,
+    "baseAsset": "NAORIS"
+  },
+  {
+    "symbol": "TOWNSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1754404200000,
+    "baseAsset": "TOWNS"
+  },
+  {
+    "symbol": "PROVEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1754413200000,
+    "baseAsset": "PROVE"
+  },
+  {
+    "symbol": "ALLUSDT",
+    "status": "TRADING",
+    "onboardDate": 1754470800000,
+    "baseAsset": "ALL"
+  },
+  {
+    "symbol": "INUSDT",
+    "status": "TRADING",
+    "onboardDate": 1754562600000,
+    "baseAsset": "IN"
+  },
+  {
+    "symbol": "CARVUSDT",
+    "status": "TRADING",
+    "onboardDate": 1754585100000,
+    "baseAsset": "CARV"
+  },
+  {
+    "symbol": "AIOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1755084600000,
+    "baseAsset": "AIO"
+  },
+  {
+    "symbol": "XNYUSDT",
+    "status": "TRADING",
+    "onboardDate": 1755085500000,
+    "baseAsset": "XNY"
+  },
+  {
+    "symbol": "USELESSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1755260100000,
+    "baseAsset": "USELESS"
+  },
+  {
+    "symbol": "DAMUSDT",
+    "status": "TRADING",
+    "onboardDate": 1755520200000,
+    "baseAsset": "DAM"
+  },
+  {
+    "symbol": "SAPIENUSDT",
+    "status": "TRADING",
+    "onboardDate": 1755711000000,
+    "baseAsset": "SAPIEN"
+  },
+  {
+    "symbol": "XPLUSDT",
+    "status": "TRADING",
+    "onboardDate": 1755855000000,
+    "baseAsset": "XPL"
+  },
+  {
+    "symbol": "WLFIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1755937800000,
+    "baseAsset": "WLFI"
+  },
+  {
+    "symbol": "SOMIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1756114200000,
+    "baseAsset": "SOMI"
+  },
+  {
+    "symbol": "BASUSDT",
+    "status": "TRADING",
+    "onboardDate": 1756215000000,
+    "baseAsset": "BAS"
+  },
+  {
+    "symbol": "BTRUSDT",
+    "status": "TRADING",
+    "onboardDate": 1756290600000,
+    "baseAsset": "BTR"
+  },
+  {
+    "symbol": "MITOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1756391400000,
+    "baseAsset": "MITO"
+  },
+  {
+    "symbol": "HEMIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1756441800000,
+    "baseAsset": "HEMI"
+  },
+  {
+    "symbol": "LINEAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1756715400000,
+    "baseAsset": "LINEA"
+  },
+  {
+    "symbol": "QUSDT",
+    "status": "TRADING",
+    "onboardDate": 1756798200000,
+    "baseAsset": "Q"
+  },
+  {
+    "symbol": "ARIAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1756897200000,
+    "baseAsset": "ARIA"
+  },
+  {
+    "symbol": "TAKEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1756898100000,
+    "baseAsset": "TAKE"
+  },
+  {
+    "symbol": "PTBUSDT",
+    "status": "TRADING",
+    "onboardDate": 1756902600000,
+    "baseAsset": "PTB"
+  },
+  {
+    "symbol": "OPENUSDT",
+    "status": "TRADING",
+    "onboardDate": 1757336400000,
+    "baseAsset": "OPEN"
+  },
+  {
+    "symbol": "FLOCKUSDT",
+    "status": "TRADING",
+    "onboardDate": 1757400300000,
+    "baseAsset": "FLOCK"
+  },
+  {
+    "symbol": "SKYUSDT",
+    "status": "TRADING",
+    "onboardDate": 1757401200000,
+    "baseAsset": "SKY"
+  },
+  {
+    "symbol": "AVNTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1757430000000,
+    "baseAsset": "AVNT"
+  },
+  {
+    "symbol": "HOLOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1757592000000,
+    "baseAsset": "HOLO"
+  },
+  {
+    "symbol": "XPINUSDT",
+    "status": "TRADING",
+    "onboardDate": 1757664000000,
+    "baseAsset": "XPIN"
+  },
+  {
+    "symbol": "UBUSDT",
+    "status": "TRADING",
+    "onboardDate": 1757673000000,
+    "baseAsset": "UB"
+  },
+  {
+    "symbol": "ZKCUSDT",
+    "status": "TRADING",
+    "onboardDate": 1757944800000,
+    "baseAsset": "ZKC"
+  },
+  {
+    "symbol": "TOSHIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1758087000000,
+    "baseAsset": "TOSHI"
+  },
+  {
+    "symbol": "STBLUSDT",
+    "status": "TRADING",
+    "onboardDate": 1758087900000,
+    "baseAsset": "STBL"
+  },
+  {
+    "symbol": "0GUSDT",
+    "status": "TRADING",
+    "onboardDate": 1758123900000,
+    "baseAsset": "0G"
+  },
+  {
+    "symbol": "BARDUSDT",
+    "status": "TRADING",
+    "onboardDate": 1758193200000,
+    "baseAsset": "BARD"
+  },
+  {
+    "symbol": "ASTERUSDT",
+    "status": "TRADING",
+    "onboardDate": 1758283200000,
+    "baseAsset": "ASTER"
+  },
+  {
+    "symbol": "TRADOORUSDT",
+    "status": "TRADING",
+    "onboardDate": 1758285000000,
+    "baseAsset": "TRADOOR"
+  },
+  {
+    "symbol": "BLESSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1758619800000,
+    "baseAsset": "BLESS"
+  },
+  {
+    "symbol": "FLUIDUSDT",
+    "status": "TRADING",
+    "onboardDate": 1758708900000,
+    "baseAsset": "FLUID"
+  },
+  {
+    "symbol": "COAIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1758785400000,
+    "baseAsset": "COAI"
+  },
+  {
+    "symbol": "HANAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1758886200000,
+    "baseAsset": "HANA"
+  },
+  {
+    "symbol": "MIRAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1758888000000,
+    "baseAsset": "MIRA"
+  },
+  {
+    "symbol": "AKEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1758889800000,
+    "baseAsset": "AKE"
+  },
+  {
+    "symbol": "ORDERUSDT",
+    "status": "TRADING",
+    "onboardDate": 1758890700000,
+    "baseAsset": "ORDER"
+  },
+  {
+    "symbol": "LIGHTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1758972600000,
+    "baseAsset": "LIGHT"
+  },
+  {
+    "symbol": "XANUSDT",
+    "status": "TRADING",
+    "onboardDate": 1759141800000,
+    "baseAsset": "XAN"
+  },
+  {
+    "symbol": "FFUSDT",
+    "status": "TRADING",
+    "onboardDate": 1759150800000,
+    "baseAsset": "FF"
+  },
+  {
+    "symbol": "VFYUSDT",
+    "status": "TRADING",
+    "onboardDate": 1759233600000,
+    "baseAsset": "VFY"
+  },
+  {
+    "symbol": "EDENUSDT",
+    "status": "TRADING",
+    "onboardDate": 1759230000000,
+    "baseAsset": "EDEN"
+  },
+  {
+    "symbol": "NOMUSDT",
+    "status": "TRADING",
+    "onboardDate": 1759305600000,
+    "baseAsset": "NOM"
+  },
+  {
+    "symbol": "TRUTHUSDT",
+    "status": "TRADING",
+    "onboardDate": 1759321800000,
+    "baseAsset": "TRUTH"
+  },
+  {
+    "symbol": "2ZUSDT",
+    "status": "TRADING",
+    "onboardDate": 1759408200000,
+    "baseAsset": "2Z"
+  },
+  {
+    "symbol": "EVAAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1759487400000,
+    "baseAsset": "EVAA"
+  },
+  {
+    "symbol": "LYNUSDT",
+    "status": "TRADING",
+    "onboardDate": 1759735800000,
+    "baseAsset": "LYN"
+  },
+  {
+    "symbol": "KGENUSDT",
+    "status": "TRADING",
+    "onboardDate": 1759847400000,
+    "baseAsset": "KGEN"
+  },
+  {
+    "symbol": "4USDT",
+    "status": "TRADING",
+    "onboardDate": 1759923000000,
+    "baseAsset": "4"
+  },
+  {
+    "symbol": "GIGGLEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1760003100000,
+    "baseAsset": "GIGGLE"
+  },
+  {
+    "symbol": "MONUSDT",
+    "status": "TRADING",
+    "onboardDate": 1760080500000,
+    "baseAsset": "MON"
+  },
+  {
+    "symbol": "YBUSDT",
+    "status": "TRADING",
+    "onboardDate": 1760107500000,
+    "baseAsset": "YB"
+  },
+  {
+    "symbol": "METUSDT",
+    "status": "TRADING",
+    "onboardDate": 1760185800000,
+    "baseAsset": "MET"
+  },
+  {
+    "symbol": "EULUSDT",
+    "status": "TRADING",
+    "onboardDate": 1760365800000,
+    "baseAsset": "EUL"
+  },
+  {
+    "symbol": "ENSOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1760432400000,
+    "baseAsset": "ENSO"
+  },
+  {
+    "symbol": "CLOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1760441400000,
+    "baseAsset": "CLO"
+  },
+  {
+    "symbol": "RECALLUSDT",
+    "status": "TRADING",
+    "onboardDate": 1760531400000,
+    "baseAsset": "RECALL"
+  },
+  {
+    "symbol": "ZBTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1760700600000,
+    "baseAsset": "ZBT"
+  },
+  {
+    "symbol": "LABUSDT",
+    "status": "TRADING",
+    "onboardDate": 1760711400000,
+    "baseAsset": "LAB"
+  },
+  {
+    "symbol": "RIVERUSDT",
+    "status": "TRADING",
+    "onboardDate": 1760712300000,
+    "baseAsset": "RIVER"
+  },
+  {
+    "symbol": "\u5e01\u5b89\u4eba\u751fUSDT",
+    "status": "TRADING",
+    "onboardDate": 1760958000000,
+    "baseAsset": "\u5e01\u5b89\u4eba\u751f"
+  },
+  {
+    "symbol": "BLUAIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1761046200000,
+    "baseAsset": "BLUAI"
+  },
+  {
+    "symbol": "TURTLEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1761145200000,
+    "baseAsset": "TURTLE"
+  },
+  {
+    "symbol": "APRUSDT",
+    "status": "TRADING",
+    "onboardDate": 1761215400000,
+    "baseAsset": "APR"
+  },
+  {
+    "symbol": "ONUSDT",
+    "status": "TRADING",
+    "onboardDate": 1761294600000,
+    "baseAsset": "ON"
+  },
+  {
+    "symbol": "KITEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1761733800000,
+    "baseAsset": "KITE"
+  },
+  {
+    "symbol": "ATUSDT",
+    "status": "TRADING",
+    "onboardDate": 1761737400000,
+    "baseAsset": "AT"
+  },
+  {
+    "symbol": "CCUSDT",
+    "status": "TRADING",
+    "onboardDate": 1761912000000,
+    "baseAsset": "CC"
+  },
+  {
+    "symbol": "MMTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1762257600000,
+    "baseAsset": "MMT"
+  },
+  {
+    "symbol": "TRUSTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1762335000000,
+    "baseAsset": "TRUST"
+  },
+  {
+    "symbol": "UAIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1762428600000,
+    "baseAsset": "UAI"
+  },
+  {
+    "symbol": "FOLKSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1762432200000,
+    "baseAsset": "FOLKS"
+  },
+  {
+    "symbol": "STABLEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1762430400000,
+    "baseAsset": "STABLE"
+  },
+  {
+    "symbol": "JCTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1762770600000,
+    "baseAsset": "JCT"
+  },
+  {
+    "symbol": "ALLOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1762869600000,
+    "baseAsset": "ALLO"
+  },
+  {
+    "symbol": "CLANKERUSDT",
+    "status": "TRADING",
+    "onboardDate": 1762948800000,
+    "baseAsset": "CLANKER"
+  },
+  {
+    "symbol": "BEATUSDT",
+    "status": "TRADING",
+    "onboardDate": 1762949700000,
+    "baseAsset": "BEAT"
+  },
+  {
+    "symbol": "PIEVERSEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1763119800000,
+    "baseAsset": "PIEVERSE"
+  },
+  {
+    "symbol": "SENTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1763124300000,
+    "baseAsset": "SENT"
+  },
+  {
+    "symbol": "BOBUSDT",
+    "status": "TRADING",
+    "onboardDate": 1763721900000,
+    "baseAsset": "BOB"
+  },
+  {
+    "symbol": "IRYSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1764172800000,
+    "baseAsset": "IRYS"
+  },
+  {
+    "symbol": "RLSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1764669600000,
+    "baseAsset": "RLS"
+  },
+  {
+    "symbol": "POWERUSDT",
+    "status": "TRADING",
+    "onboardDate": 1765011600000,
+    "baseAsset": "POWER"
+  },
+  {
+    "symbol": "WETUSDT",
+    "status": "TRADING",
+    "onboardDate": 1765350000000,
+    "baseAsset": "WET"
+  },
+  {
+    "symbol": "NIGHTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1765364400000,
+    "baseAsset": "NIGHT"
+  },
+  {
+    "symbol": "USUSDT",
+    "status": "TRADING",
+    "onboardDate": 1765536300000,
+    "baseAsset": "US"
+  },
+  {
+    "symbol": "CYSUSDT",
+    "status": "TRADING",
+    "onboardDate": 1765537200000,
+    "baseAsset": "CYS"
+  },
+  {
+    "symbol": "RAVEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1765726200000,
+    "baseAsset": "RAVE"
+  },
+  {
+    "symbol": "ZKPUSDT",
+    "status": "TRADING",
+    "onboardDate": 1766311200000,
+    "baseAsset": "ZKP"
+  },
+  {
+    "symbol": "GUAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1766312100000,
+    "baseAsset": "GUA"
+  },
+  {
+    "symbol": "IRUSDT",
+    "status": "TRADING",
+    "onboardDate": 1766313000000,
+    "baseAsset": "IR"
+  },
+  {
+    "symbol": "LITUSDT",
+    "status": "TRADING",
+    "onboardDate": 1766511000000,
+    "baseAsset": "LIT"
+  },
+  {
+    "symbol": "BREVUSDT",
+    "status": "TRADING",
+    "onboardDate": 1767091500000,
+    "baseAsset": "BREV"
+  },
+  {
+    "symbol": "COLLECTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1767186900000,
+    "baseAsset": "COLLECT"
+  },
+  {
+    "symbol": "MAGMAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1767187800000,
+    "baseAsset": "MAGMA"
+  },
+  {
+    "symbol": "ZAMAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1767949200000,
+    "baseAsset": "ZAMA"
+  },
+  {
+    "symbol": "FOGOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1768053600000,
+    "baseAsset": "FOGO"
+  },
+  {
+    "symbol": "FRAXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1768464000000,
+    "baseAsset": "FRAX"
+  },
+  {
+    "symbol": "SPORTFUNUSDT",
+    "status": "TRADING",
+    "onboardDate": 1768571100000,
+    "baseAsset": "SPORTFUN"
+  },
+  {
+    "symbol": "AIAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1768907700000,
+    "baseAsset": "AIA"
+  },
+  {
+    "symbol": "ACUUSDT",
+    "status": "TRADING",
+    "onboardDate": 1768999500000,
+    "baseAsset": "ACU"
+  },
+  {
+    "symbol": "\u6211\u8e0f\u9a6c\u6765\u4e86USDT",
+    "status": "TRADING",
+    "onboardDate": 1769005800000,
+    "baseAsset": "\u6211\u8e0f\u9a6c\u6765\u4e86"
+  },
+  {
+    "symbol": "ELSAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1769066700000,
+    "baseAsset": "ELSA"
+  },
+  {
+    "symbol": "SKRUSDT",
+    "status": "TRADING",
+    "onboardDate": 1769078700000,
+    "baseAsset": "SKR"
+  },
+  {
+    "symbol": "SPACEUSDT",
+    "status": "TRADING",
+    "onboardDate": 1769168700000,
+    "baseAsset": "SPACE"
+  },
+  {
+    "symbol": "FIGHTUSDT",
+    "status": "TRADING",
+    "onboardDate": 1769170500000,
+    "baseAsset": "FIGHT"
+  },
+  {
+    "symbol": "BIRBUSDT",
+    "status": "TRADING",
+    "onboardDate": 1769663700000,
+    "baseAsset": "BIRB"
+  },
+  {
+    "symbol": "GWEIUSDT",
+    "status": "TRADING",
+    "onboardDate": 1769664600000,
+    "baseAsset": "GWEI"
+  },
+  {
+    "symbol": "MEGAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1769775300000,
+    "baseAsset": "MEGA"
+  },
+  {
+    "symbol": "INXUSDT",
+    "status": "TRADING",
+    "onboardDate": 1769799600000,
+    "baseAsset": "INX"
+  },
+  {
+    "symbol": "TRIAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1770380100000,
+    "baseAsset": "TRIA"
+  },
+  {
+    "symbol": "ESPUSDT",
+    "status": "TRADING",
+    "onboardDate": 1770711000000,
+    "baseAsset": "ESP"
+  },
+  {
+    "symbol": "AZTECUSDT",
+    "status": "TRADING",
+    "onboardDate": 1770784200000,
+    "baseAsset": "AZTEC"
+  },
+  {
+    "symbol": "OPNUSDT",
+    "status": "TRADING",
+    "onboardDate": 1771686000000,
+    "baseAsset": "OPN"
+  },
+  {
+    "symbol": "ROBOUSDT",
+    "status": "TRADING",
+    "onboardDate": 1772181900000,
+    "baseAsset": "ROBO"
+  },
+  {
+    "symbol": "KATUSDT",
+    "status": "TRADING",
+    "onboardDate": 1772427600000,
+    "baseAsset": "KAT"
+  },
+  {
+    "symbol": "MANTRAUSDT",
+    "status": "TRADING",
+    "onboardDate": 1772611200000,
+    "baseAsset": "MANTRA"
+  },
+  {
+    "symbol": "\u9f99\u867eUSDT",
+    "status": "TRADING",
+    "onboardDate": 1773228600000,
+    "baseAsset": "\u9f99\u867e"
+  },
+  {
+    "symbol": "CFGUSDT",
+    "status": "TRADING",
+    "onboardDate": 1773666000000,
+    "baseAsset": "CFG"
+  }
+]

@@ -1,0 +1,10 @@
+__pycache__
+*.pyc
+.git
+.venv
+venv
+node_modules
+paper_trading/
+*.egg-info
+.pytest_cache
+docs/

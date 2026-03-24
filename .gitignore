@@ -1,8 +1,14 @@
-# Data files (large binaries)
-data/
-results/
+# Large cached data (recomputable)
+data/feature_panel*.parquet
+data/ml_panel.parquet
+data/*.db
+data/*.log
+data/*.json
 catboost_info/
 paper_trading/
+
+# Results (generated)
+results/
 
 # Python
 __pycache__/
