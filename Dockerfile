@@ -19,6 +19,9 @@ RUN mkdir -p results
 # Paper trading state directory (managed by Coolify persistent storage)
 RUN mkdir -p paper_trading
 
+# Seed data for first deploy (copied to volume if empty)
+COPY paper_trading_seed/ paper_trading_seed/
+
 # Expose dashboard port
 EXPOSE 5001
 

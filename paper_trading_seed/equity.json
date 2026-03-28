@@ -1,0 +1,233 @@
+[
+  {
+    "timestamp": "2026-03-24T15:39:34.988140+00:00",
+    "equity": 9977.5256586,
+    "positions": 5,
+    "symbols": [
+      "PIPPINUSDT",
+      "BRUSDT",
+      "RIVERUSDT",
+      "SIRENUSDT",
+      "LIGHTUSDT"
+    ],
+    "event": "rebalance",
+    "mark_equity": 9977.5256586,
+    "idle_yield_accrued": 0.0
+  },
+  {
+    "timestamp": "2026-03-24T15:39:36.497015+00:00",
+    "equity": 9975.051930663463,
+    "mark_equity": 9972.142734724159,
+    "unrealized_pnl_pct": -0.029164719738072886,
+    "positions": 5,
+    "idle_yield_accrued": 0.0,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-24T19:39:38.257460+00:00",
+    "equity": 9972.578816038294,
+    "mark_equity": 10175.963662328906,
+    "unrealized_pnl_pct": 2.039440851182035,
+    "positions": 5,
+    "idle_yield_accrued": 0.0,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-24T23:39:39.990561+00:00",
+    "equity": 9359.153699753962,
+    "mark_equity": 9876.054730484535,
+    "unrealized_pnl_pct": 5.522946276052288,
+    "positions": 4,
+    "idle_yield_accrued": 0.04274414454728855,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-25T03:39:40.851585+00:00",
+    "equity": 8035.051596956189,
+    "mark_equity": 8573.114179440214,
+    "unrealized_pnl_pct": 6.696442157108866,
+    "positions": 3,
+    "idle_yield_accrued": 0.11613385836721074,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-25T07:39:42.446659+00:00",
+    "equity": 8033.929687301585,
+    "mark_equity": 8902.536968887502,
+    "unrealized_pnl_pct": 10.81173616640977,
+    "positions": 3,
+    "idle_yield_accrued": 0.18951332500608006,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-25T11:39:43.982605+00:00",
+    "equity": 8032.807934295791,
+    "mark_equity": 9081.074682035787,
+    "unrealized_pnl_pct": 13.049817153780788,
+    "positions": 3,
+    "idle_yield_accrued": 0.262882545894679,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-25T15:39:44.771640+00:00",
+    "equity": 8031.6863379169345,
+    "mark_equity": 9243.440563079655,
+    "unrealized_pnl_pct": 15.087170666042175,
+    "positions": 3,
+    "idle_yield_accrued": 0.3362415224635904,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-25T19:39:45.421153+00:00",
+    "equity": 8030.564898143147,
+    "mark_equity": 10330.473314748686,
+    "unrealized_pnl_pct": 28.63943503074523,
+    "positions": 3,
+    "idle_yield_accrued": 0.4095902561431971,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-25T23:39:46.349163+00:00",
+    "equity": 8029.443614952562,
+    "mark_equity": 10177.006209427258,
+    "unrealized_pnl_pct": 26.746094716643505,
+    "positions": 3,
+    "idle_yield_accrued": 0.4829287483636825,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-26T03:39:47.156554+00:00",
+    "equity": 8593.14359137997,
+    "mark_equity": 10371.47313178245,
+    "unrealized_pnl_pct": 20.694749499896314,
+    "positions": 2,
+    "idle_yield_accrued": 0.6006531065935548,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-26T07:39:48.719631+00:00",
+    "equity": 8592.409094765537,
+    "mark_equity": 10337.571461541385,
+    "unrealized_pnl_pct": 20.310513006637404,
+    "positions": 2,
+    "idle_yield_accrued": 0.7183674023658831,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-26T11:39:51.151892+00:00",
+    "equity": 8591.674660932002,
+    "mark_equity": 10567.017237280912,
+    "unrealized_pnl_pct": 22.991356799520972,
+    "positions": 2,
+    "idle_yield_accrued": 0.8360716365407536,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-26T15:39:52.799472+00:00",
+    "equity": 8590.940289873999,
+    "mark_equity": 10854.916842282182,
+    "unrealized_pnl_pct": 26.35307051402388,
+    "positions": 2,
+    "idle_yield_accrued": 0.9537658099781783,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-26T19:39:55.243196+00:00",
+    "equity": 8590.205981586163,
+    "mark_equity": 11379.762623609897,
+    "unrealized_pnl_pct": 32.473687452936346,
+    "positions": 2,
+    "idle_yield_accrued": 1.071449923538096,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-26T23:39:55.876045+00:00",
+    "equity": 8589.471736063128,
+    "mark_equity": 11511.870417699234,
+    "unrealized_pnl_pct": 34.02303158372752,
+    "positions": 2,
+    "idle_yield_accrued": 1.1891239780803724,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-27T03:39:57.609414+00:00",
+    "equity": 8588.73755329953,
+    "mark_equity": 11463.578756908706,
+    "unrealized_pnl_pct": 33.472220867952224,
+    "positions": 2,
+    "idle_yield_accrued": 1.3067879744647988,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-27T07:39:58.587066+00:00",
+    "equity": 8588.003433290005,
+    "mark_equity": 11398.427432480472,
+    "unrealized_pnl_pct": 32.72499855200701,
+    "positions": 2,
+    "idle_yield_accrued": 1.4244419135510937,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-27T11:40:00.090253+00:00",
+    "equity": 8587.269376029188,
+    "mark_equity": 11916.72817434244,
+    "unrealized_pnl_pct": 38.772031626342404,
+    "positions": 2,
+    "idle_yield_accrued": 1.542085796198902,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-27T15:40:02.727657+00:00",
+    "equity": 8586.535381511716,
+    "mark_equity": 12172.592759581516,
+    "unrealized_pnl_pct": 41.76372912631556,
+    "positions": 2,
+    "idle_yield_accrued": 1.659719623267795,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-27T19:40:03.351792+00:00",
+    "equity": 8585.801449732226,
+    "mark_equity": 12251.189197222433,
+    "unrealized_pnl_pct": 42.691270802733534,
+    "positions": 2,
+    "idle_yield_accrued": 1.7773433956172706,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-27T23:40:05.790222+00:00",
+    "equity": 8585.067580685356,
+    "mark_equity": 12276.366065245835,
+    "unrealized_pnl_pct": 42.996731823814,
+    "positions": 2,
+    "idle_yield_accrued": 1.8949571141067532,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-28T03:40:06.508641+00:00",
+    "equity": 8584.333774365743,
+    "mark_equity": 12149.621001866646,
+    "unrealized_pnl_pct": 41.532486052062026,
+    "positions": 2,
+    "idle_yield_accrued": 2.0125607795955935,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-28T07:40:08.038410+00:00",
+    "equity": 8583.600030768026,
+    "mark_equity": 11864.795513807243,
+    "unrealized_pnl_pct": 38.2263324395094,
+    "positions": 2,
+    "idle_yield_accrued": 2.1301543929430693,
+    "event": "monitor"
+  },
+  {
+    "timestamp": "2026-03-28T11:40:09.567384+00:00",
+    "equity": 9279.124737966156,
+    "mark_equity": 12725.627710238572,
+    "unrealized_pnl_pct": 37.142543823889106,
+    "positions": 1,
+    "idle_yield_accrued": 2.299641432001019,
+    "event": "monitor"
+  }
+]

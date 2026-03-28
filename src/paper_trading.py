@@ -519,9 +519,10 @@ def check_stops(state):
                 pos['unrealized_pnl'] = -(current_price / pos['entry_price'] - 1)
                 remaining.append(pos)
 
-    # Apply closed PnL
+    # Apply closed PnL — fixed weight based on original position count (TOP_N)
+    n_positions_at_entry = state.get('n_positions_at_entry', TOP_N)
     for pos in closed:
-        weight = 1.0 / len(state['positions'])
+        weight = 1.0 / n_positions_at_entry
         state['equity'] *= (1 + pos['return'] * weight)
 
     state['positions'] = remaining
@@ -554,6 +555,7 @@ def rebalance(state):
         symbols = [p['symbol'] for p in state['positions']]
         prices = fetch_current_prices(symbols)
         trades = load_trades()
+        n_positions_at_entry = state.get('n_positions_at_entry', TOP_N)
         for pos in state['positions']:
             sym = pos['symbol']
             current_price = prices.get(sym, pos.get('current_price', pos['entry_price']))
@@ -564,7 +566,7 @@ def rebalance(state):
             pos['exit_reason'] = 'rebalance'
             pos['return'] = ret
             trades.append(pos)
-            weight = 1.0 / max(len(state['positions']), 1)
+            weight = 1.0 / n_positions_at_entry
             state['equity'] *= (1 + ret * weight)
             log_event('close', f"REBALANCE CLOSE {sym}: ret={ret*100:.2f}%")
         save_trades(trades)
@@ -651,6 +653,7 @@ def rebalance(state):
     # Deduct entry costs
     state['equity'] *= (1 - COST_PER_SIDE * len(new_positions) / max(len(new_positions), 1))
     state['positions'] = new_positions
+    state['n_positions_at_entry'] = len(new_positions)
     state['last_rebalance'] = now
     state['total_trades'] += len(new_positions)
 
@@ -701,6 +704,25 @@ def run_cycle():
         state, closed = check_stops(state)
         if closed:
             log_event('monitor', f'{len(closed)} positions stopped out')
+
+        # Apply funding cost on open short positions (Binance: 3x/day, our cycle: 4h = 0.5 funding periods)
+        if state['positions']:
+            funding_rates = fetch_current_funding([p['symbol'] for p in state['positions']])
+            n_positions_at_entry = state.get('n_positions_at_entry', TOP_N)
+            total_funding_cost = 0.0
+            for pos in state['positions']:
+                rate = funding_rates.get(pos['symbol'], pos.get('funding_rate', 0))
+                pos['funding_rate'] = rate
+                # Short pays funding when rate > 0, receives when rate < 0
+                # Each position has weight 1/n_positions_at_entry of equity
+                # Funding is applied per 8h; our cycle is 4h = 0.5 funding periods
+                funding_cost = rate * 0.5 * (1.0 / n_positions_at_entry)
+                total_funding_cost += funding_cost
+            if total_funding_cost != 0:
+                state['equity'] *= (1 - total_funding_cost)
+                state['cumulative_funding'] = state.get('cumulative_funding', 0.0) + total_funding_cost * state['equity']
+                if closed:
+                    log_event('funding', f'Funding cost: {total_funding_cost*100:.4f}% (cumul ${state["cumulative_funding"]:.2f})')
 
         # Accrue stablecoin yield on idle capital
         n_open = len(state['positions'])

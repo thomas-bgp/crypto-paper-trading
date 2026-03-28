@@ -1,0 +1,94 @@
+[
+  {
+    "symbol": "BRUSDT",
+    "direction": "short",
+    "entry_price": 0.12784,
+    "entry_time": "2026-03-24T15:39:34.988140+00:00",
+    "trough": 0.12784,
+    "current_price": 0.16678,
+    "score": -1.934897187337313,
+    "funding_rate": 5e-05,
+    "features": {
+      "mom_14": 0.9467032130348714,
+      "mom_28": 1.3151032234697575,
+      "mom_56": 0.9195195195195194,
+      "mom_14_skip1": -0.9251788165594972,
+      "poly_slope_28": 0.09261735243310748
+    },
+    "unrealized_pnl": -0.10472066645807265,
+    "days_held": 0,
+    "exit_price": 0.16678,
+    "exit_time": "2026-03-24T23:39:39.626332+00:00",
+    "exit_reason": "trailing_stop",
+    "return": -0.3065994993742178
+  },
+  {
+    "symbol": "SIRENUSDT",
+    "direction": "short",
+    "entry_price": 1.0133,
+    "entry_time": "2026-03-24T15:39:34.988140+00:00",
+    "trough": 1.01103,
+    "current_price": 1.72836,
+    "score": -1.9103654804380918,
+    "funding_rate": -0.00069147,
+    "features": {
+      "mom_14": 1.0894134182133852,
+      "mom_28": 2.0670509708737863,
+      "mom_56": 10.346952519923672,
+      "mom_14_skip1": 719.4401942926534,
+      "poly_slope_28": 0.4555197819806611
+    },
+    "unrealized_pnl": -0.00026645613342535235,
+    "days_held": 0,
+    "exit_price": 1.72836,
+    "exit_time": "2026-03-25T03:39:40.541101+00:00",
+    "exit_reason": "trailing_stop",
+    "return": -0.7076745287673933
+  },
+  {
+    "symbol": "PIPPINUSDT",
+    "direction": "short",
+    "entry_price": 0.08405,
+    "entry_time": "2026-03-24T15:39:34.988140+00:00",
+    "trough": 0.04643451,
+    "current_price": 0.054287,
+    "score": -2.27675598537526,
+    "funding_rate": 0.00013133,
+    "features": {
+      "mom_14": -0.762778247393632,
+      "mom_28": -0.8963151801768516,
+      "mom_56": -0.8136564851704293,
+      "mom_14_skip1": -0.6837086092715232,
+      "poly_slope_28": -0.6643648626065151
+    },
+    "unrealized_pnl": 0.3964306960142773,
+    "days_held": 1,
+    "exit_price": 0.054287,
+    "exit_time": "2026-03-26T03:39:46.854723+00:00",
+    "exit_reason": "trailing_stop",
+    "return": 0.3521106484235573
+  },
+  {
+    "symbol": "RIVERUSDT",
+    "direction": "short",
+    "entry_price": 24.3851275,
+    "entry_time": "2026-03-24T15:39:34.988140+00:00",
+    "trough": 12.591,
+    "current_price": 14.6679052,
+    "score": -1.9283083514568418,
+    "funding_rate": -0.0007111,
+    "features": {
+      "mom_14": 0.7496405980448533,
+      "mom_28": 1.8270615563298493,
+      "mom_56": -0.6143755643921991,
+      "mom_14_skip1": -0.3773064459976969,
+      "poly_slope_28": 0.27880143121850287
+    },
+    "unrealized_pnl": 0.4086359027649128,
+    "days_held": 3,
+    "exit_price": 14.6679052,
+    "exit_time": "2026-03-28T11:40:09.265215+00:00",
+    "exit_reason": "trailing_stop",
+    "return": 0.3964897064819529
+  }
+]

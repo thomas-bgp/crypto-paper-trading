@@ -1,0 +1,32 @@
+{
+  "capital": 10000,
+  "equity": 9279.124737966156,
+  "positions": [
+    {
+      "symbol": "LIGHTUSDT",
+      "direction": "short",
+      "entry_price": 0.2453,
+      "entry_time": "2026-03-24T15:39:34.988140+00:00",
+      "trough": 0.14966427,
+      "current_price": 0.15418934,
+      "score": -1.636294758425081,
+      "funding_rate": 0.00049586,
+      "features": {
+        "mom_14": 0.3965909090909092,
+        "mom_28": 0.1453867660764212,
+        "mom_56": -0.4075680886960713,
+        "mom_14_skip1": -0.9999947859266587,
+        "poly_slope_28": 0.06753811650519961
+      },
+      "unrealized_pnl": 0.37142543823889107,
+      "days_held": 3
+    }
+  ],
+  "last_rebalance": "2026-03-24T15:39:34.988140+00:00",
+  "total_trades": 5,
+  "started_at": "2026-03-24T15:38:41.842634+00:00",
+  "cumulative_yield": 2.299641432001019,
+  "estimated_funding_cost_pct": 0.623928,
+  "cumulative_funding": 17.955067505359928,
+  "n_positions_at_entry": 5
+}
