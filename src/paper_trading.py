@@ -745,7 +745,8 @@ def run_cycle():
                 pos['unrealized_pnl'] = -(cp / pos['entry_price'] - 1)
                 unrealized += pos['unrealized_pnl']
 
-            avg_unreal = unrealized / len(state['positions']) if state['positions'] else 0
+            n_at_entry = state.get('n_positions_at_entry', TOP_N)
+            avg_unreal = unrealized / n_at_entry if state['positions'] else 0
             mark_equity = state['equity'] * (1 + avg_unreal)
 
             equity_hist = load_equity_history()

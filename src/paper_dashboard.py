@@ -110,7 +110,8 @@ def build_html():
             pass
 
     # Unrealized PnL
-    total_unreal = sum(p.get('unrealized_pnl', 0) for p in positions) * 100 / max(len(positions), 1) if positions else 0
+    n_at_entry = state.get('n_positions_at_entry', 5)
+    total_unreal = sum(p.get('unrealized_pnl', 0) for p in positions) * 100 / n_at_entry if positions else 0
 
     # ─── Build positions table rows ───
     pos_rows = ""
