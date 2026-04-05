@@ -1,7 +1,9 @@
 """
-Paper Trading Engine — CatBoost Short-Only Strategy
-Runs the ML model against LIVE Binance data without real capital.
-Trains on historical data, then monitors real positions every rebalance cycle.
+Paper Trading Engine — CatBoost Short + Long Strategy
+Runs ML models against LIVE Binance data without real capital.
+Two independent strategies sharing the same data pipeline:
+  - SHORT: CatBoost YetiRank targeting fwd_min (losers). Original baseline.
+  - LONG:  CatBoost YetiRank targeting fwd_max (winners). Regime-filtered.
 
 Usage:
     python paper_trading.py              # Run one cycle (cron-friendly)
@@ -30,17 +32,25 @@ RESULTS_DIR = PROJECT_DIR / 'results'
 PAPER_DIR = PROJECT_DIR / 'paper_trading'
 PAPER_DIR.mkdir(exist_ok=True)
 
-# ─── Config (mirrors backtest exactly) ───
+# ─── Config: SHORT strategy (original baseline, unchanged) ───
 HOLDING_DAYS = 5               # Changed from 14: signal decays fast, 5d captures more alpha
 TOP_N = 5
 UNIVERSE_TOP = 50
 COST_PER_SIDE = 0.002      # 0.20% simulated cost
-STOP_PCT = 0.15             # 15% trailing stop
-INITIAL_CAPITAL = 10_000    # paper capital
+STOP_PCT = 0.15             # 15% trailing stop (short: price rises from trough)
+INITIAL_CAPITAL = 10_000    # paper capital (total, split between strategies)
+CAPITAL_SPLIT = 0.5         # 50% short, 50% long (configurable)
 TRAIN_MONTHS = 18
 N_ENSEMBLE = 3
 STABLE_APY = 0.05              # 5% annual stablecoin yield on idle capital
 STABLE_YIELD_PER_4H = STABLE_APY / 365 / 6  # yield per 4h cycle
+
+# ─── Config: LONG strategy ───
+HOLDING_DAYS_LONG = 2          # 2 days holding (faster exit)
+TOP_N_LONG = 5                 # Top 5 by max score
+TRAILING_LONG = 0.05           # 5% trailing stop below high
+HARD_STOP_LONG = 0.08          # 8% hard stop below entry
+REBALANCE_LONG = 5             # Rebalance every 5 days (same schedule as short)
 
 BINANCE_KLINES = "https://fapi.binance.com/fapi/v1/klines"
 BINANCE_TICKER = "https://fapi.binance.com/fapi/v1/ticker/24hr"
@@ -76,6 +86,10 @@ TRADES_FILE = PAPER_DIR / 'trades.json'
 EQUITY_FILE = PAPER_DIR / 'equity.json'
 MODEL_FILE = PAPER_DIR / 'model_ensemble.cbm'
 LOG_FILE = PAPER_DIR / 'log.jsonl'
+
+# Long strategy state files (separate from short)
+TRADES_LONG_FILE = PAPER_DIR / 'trades_long.json'
+EQUITY_LONG_FILE = PAPER_DIR / 'equity_long.json'
 
 
 # ════════════════════════════════════════════
@@ -370,6 +384,106 @@ def train_model():
     return models, feat_cols
 
 
+def train_model_long():
+    """Train CatBoost ensemble for LONG strategy (target = fwd_max)."""
+    from catboost import CatBoostRanker
+
+    log_event('train', 'Starting LONG model training (target=fwd_max)')
+
+    sys.path.insert(0, str(SCRIPT_DIR))
+    from ml_features import load_daily_panel, compute_all_features
+
+    panel = load_daily_panel()
+    panel = compute_all_features(panel)
+
+    feat_cols = [f for f in CORE_FEATURES if f in panel.columns]
+    dates = panel.index.get_level_values('date').unique().sort_values()
+    train_end = dates[-1]
+    train_start = train_end - pd.DateOffset(months=TRAIN_MONTHS)
+
+    train_mask = ((panel.index.get_level_values('date') >= train_start) &
+                  (panel.index.get_level_values('date') <= train_end))
+    train = panel[train_mask].copy()
+
+    # LONG target: forward MAX return over holding period
+    # For each coin, compute the max price seen in next HOLDING_DAYS_LONG days
+    g = train.groupby(level='symbol')
+    train['fwd_max'] = g['close'].transform(
+        lambda x: x.rolling(HOLDING_DAYS_LONG, min_periods=1).max().shift(-HOLDING_DAYS_LONG) / x - 1
+    )
+    # Market-neutral: subtract cross-sectional mean
+    market_ret = train.groupby(level='date')['fwd_max'].transform('mean')
+    train['neutral_fwd_max'] = train['fwd_max'] - market_ret
+
+    purge_cutoff = train.index.get_level_values('date').max() - pd.Timedelta(days=HOLDING_DAYS_LONG + 4)
+    train = train[train.index.get_level_values('date') <= purge_cutoff]
+    train = train.dropna(subset=['neutral_fwd_max'])
+
+    p1, p99 = train['neutral_fwd_max'].quantile([0.02, 0.98])
+    train['neutral_fwd_max'] = train['neutral_fwd_max'].clip(p1, p99)
+    train['target_rank'] = train.groupby(level='date')['neutral_fwd_max'].transform(
+        lambda x: pd.qcut(x, 5, labels=False, duplicates='drop') if len(x) >= 5 else 2
+    ).fillna(2).astype(int)
+
+    if 'vol_avg_28' in panel.columns:
+        vol = panel.loc[train.index, 'vol_avg_28']
+        thresh = vol.groupby(level='date').transform(lambda x: x.quantile(0.3))
+        train = train[vol > thresh]
+
+    # Train ensemble
+    models = []
+    n_dates = train.index.get_level_values('date').nunique()
+    train_dates = train.index.get_level_values('date').unique().sort_values()
+
+    for k in range(N_ENSEMBLE):
+        offset = int(n_dates * 0.2 * k / N_ENSEMBLE)
+        end_idx = n_dates - int(n_dates * 0.2 * (N_ENSEMBLE - 1 - k) / N_ENSEMBLE)
+        subset_dates = train_dates[offset:end_idx]
+        subset = train[train.index.get_level_values('date').isin(subset_dates)]
+
+        if len(subset) < 500:
+            continue
+
+        X = np.nan_to_num(subset[feat_cols].values, nan=0, posinf=0, neginf=0)
+        y = subset['target_rank'].values
+        gids = pd.Categorical(subset.index.get_level_values('date')).codes
+
+        params = CATBOOST_PARAMS.copy()
+        params['random_seed'] = 142 + k  # different seed from short models
+        model = CatBoostRanker(**params)
+        model.fit(X, y, group_id=gids)
+        models.append(model)
+
+    # Save models with _long suffix
+    for i, m in enumerate(models):
+        m.save_model(str(PAPER_DIR / f'model_long_{i}.cbm'))
+
+    # Save feature importance
+    if models:
+        imp = pd.Series(
+            models[0].get_feature_importance(type='PredictionValuesChange'),
+            index=feat_cols
+        ).sort_values(ascending=False)
+        imp_dict = (imp / (imp.sum() + 1e-10)).to_dict()
+        with open(PAPER_DIR / 'feature_importance_long.json', 'w') as f:
+            json.dump(imp_dict, f, indent=2)
+
+    meta = {
+        'trained_at': datetime.now(timezone.utc).isoformat(),
+        'train_start': str(train_start.date()),
+        'train_end': str(train_end.date()),
+        'n_models': len(models),
+        'n_rows': len(train),
+        'features': feat_cols,
+        'target': 'fwd_max',
+    }
+    with open(PAPER_DIR / 'model_meta_long.json', 'w') as f:
+        json.dump(meta, f, indent=2)
+
+    log_event('train', f'LONG: Trained {len(models)} models on {len(train)} rows ({train_start.date()} to {train_end.date()})')
+    return models, feat_cols
+
+
 def load_models():
     """Load saved models."""
     from catboost import CatBoostRanker
@@ -401,23 +515,100 @@ def models_need_retrain():
     return age_days >= 56
 
 
+def load_models_long():
+    """Load saved LONG models."""
+    from catboost import CatBoostRanker
+    models = []
+    for i in range(N_ENSEMBLE):
+        path = PAPER_DIR / f'model_long_{i}.cbm'
+        if path.exists():
+            m = CatBoostRanker()
+            m.load_model(str(path))
+            models.append(m)
+    meta_path = PAPER_DIR / 'model_meta_long.json'
+    feat_cols = CORE_FEATURES
+    if meta_path.exists():
+        with open(meta_path) as f:
+            meta = json.load(f)
+            feat_cols = meta.get('features', CORE_FEATURES)
+    return models, feat_cols
+
+
+def models_need_retrain_long():
+    """Check if LONG models are stale (>56 days old)."""
+    meta_path = PAPER_DIR / 'model_meta_long.json'
+    if not meta_path.exists():
+        return True
+    with open(meta_path) as f:
+        meta = json.load(f)
+    trained = pd.Timestamp(meta['trained_at'])
+    age_days = (pd.Timestamp.now(tz='UTC') - trained).days
+    return age_days >= 56
+
+
 # ════════════════════════════════════════════
 # STATE MANAGEMENT
 # ════════════════════════════════════════════
+
+def load_trades_long():
+    if TRADES_LONG_FILE.exists():
+        with open(TRADES_LONG_FILE) as f:
+            return json.load(f)
+    return []
+
+
+def save_trades_long(trades):
+    with open(TRADES_LONG_FILE, 'w') as f:
+        json.dump(trades, f, indent=2, default=str)
+
+
+def load_equity_history_long():
+    if EQUITY_LONG_FILE.exists():
+        with open(EQUITY_LONG_FILE) as f:
+            return json.load(f)
+    return []
+
+
+def save_equity_history_long(history):
+    with open(EQUITY_LONG_FILE, 'w') as f:
+        json.dump(history, f, indent=2, default=str)
+
 
 def load_state():
     """Load paper trading state."""
     if STATE_FILE.exists():
         with open(STATE_FILE) as f:
-            return json.load(f)
+            state = json.load(f)
+        # Migration: add long fields if missing (backward compatible)
+        if 'equity_short' not in state:
+            state['equity_short'] = state.get('equity', INITIAL_CAPITAL * CAPITAL_SPLIT)
+            state['equity_long'] = INITIAL_CAPITAL * CAPITAL_SPLIT
+            state['positions_long'] = []
+            state['last_rebalance_long'] = None
+            state['total_trades_long'] = 0
+            state['cumulative_yield_long'] = 0.0
+            state['regime_skip_count'] = 0
+        return state
+    short_cap = INITIAL_CAPITAL * CAPITAL_SPLIT
+    long_cap = INITIAL_CAPITAL * (1 - CAPITAL_SPLIT)
     return {
         'capital': INITIAL_CAPITAL,
-        'equity': INITIAL_CAPITAL,
+        # Short strategy
+        'equity': short_cap,
+        'equity_short': short_cap,
         'positions': [],
         'last_rebalance': None,
         'total_trades': 0,
-        'started_at': datetime.now(timezone.utc).isoformat(),
         'cumulative_yield': 0.0,
+        # Long strategy
+        'equity_long': long_cap,
+        'positions_long': [],
+        'last_rebalance_long': None,
+        'total_trades_long': 0,
+        'cumulative_yield_long': 0.0,
+        'regime_skip_count': 0,
+        # Shared
+        'started_at': datetime.now(timezone.utc).isoformat(),
     }
 
 
@@ -677,35 +868,300 @@ def rebalance(state):
 
 
 # ════════════════════════════════════════════
+# LONG STRATEGY — POSITION MONITORING
+# ════════════════════════════════════════════
+
+def check_stops_long(state):
+    """Check trailing stops and hard stops on open LONG positions."""
+    if not state.get('positions_long'):
+        return state, []
+
+    symbols = [p['symbol'] for p in state['positions_long']]
+    prices = fetch_current_prices(symbols)
+    closed = []
+    remaining = []
+
+    for pos in state['positions_long']:
+        sym = pos['symbol']
+        current_price = prices.get(sym)
+        if current_price is None:
+            remaining.append(pos)
+            continue
+
+        # Update peak (highest price since entry for longs)
+        peak = max(pos.get('peak', pos['entry_price']), current_price)
+        pos['peak'] = peak
+        pos['current_price'] = current_price
+
+        exit_reason = None
+        # Hard stop: 8% below entry
+        if current_price <= pos['entry_price'] * (1 - HARD_STOP_LONG):
+            exit_reason = 'hard_stop'
+        # Trailing stop: 5% below highest price seen
+        elif current_price <= peak * (1 - TRAILING_LONG):
+            exit_reason = 'trailing_stop'
+        else:
+            # Check holding period expiry (2 days)
+            entry_time = pd.Timestamp(pos['entry_time'])
+            days_held = (pd.Timestamp.now(tz='UTC') - entry_time).days
+            if days_held >= HOLDING_DAYS_LONG:
+                exit_reason = 'holding_expired'
+            else:
+                pos['days_held'] = days_held
+                pos['unrealized_pnl'] = (current_price / pos['entry_price'] - 1)
+                remaining.append(pos)
+
+        if exit_reason:
+            ret = (current_price / pos['entry_price'] - 1)
+            ret -= COST_PER_SIDE  # exit cost
+            pos['exit_price'] = current_price
+            pos['exit_time'] = datetime.now(timezone.utc).isoformat()
+            pos['exit_reason'] = exit_reason
+            pos['return'] = ret
+            closed.append(pos)
+            log_event('stop' if 'stop' in exit_reason else 'close',
+                      f"LONG {exit_reason.upper()} {sym}: entry={pos['entry_price']:.4f} exit={current_price:.4f} ret={ret*100:.2f}%")
+
+    # Apply closed PnL
+    n_positions_at_entry = state.get('n_positions_at_entry_long', TOP_N_LONG)
+    for pos in closed:
+        weight = 1.0 / n_positions_at_entry
+        state['equity_long'] *= (1 + pos['return'] * weight)
+
+    state['positions_long'] = remaining
+
+    # Record trades
+    if closed:
+        trades = load_trades_long()
+        trades.extend(closed)
+        save_trades_long(trades)
+
+    return state, closed
+
+
+def check_regime_filter(panel):
+    """Regime filter for LONG strategy: skip if market median 7d return < 0."""
+    try:
+        # Compute 7-day return for each symbol in the latest cross-section
+        g = panel.groupby(level='symbol')
+        ret_7d = g['close'].transform(lambda x: x.pct_change(7))
+        latest_date = panel.index.get_level_values('date').max()
+        cross_ret = ret_7d.loc[latest_date]
+        median_ret = cross_ret.median()
+        log_event('regime', f'Median 7d return: {median_ret*100:.2f}% (threshold: 0%)')
+        return median_ret >= 0, median_ret
+    except Exception as e:
+        log_event('error', f'Regime filter failed: {e}')
+        return True, 0.0  # default to allowing trades if filter fails
+
+
+def rebalance_long(state, panel=None, symbols_info=None):
+    """Run the LONG rebalance cycle: close old positions, predict, open new."""
+    log_event('rebalance', 'Starting LONG rebalance cycle')
+
+    # Load or train LONG models
+    models, feat_cols = load_models_long()
+    if not models or models_need_retrain_long():
+        log_event('rebalance', 'LONG models need training')
+        models, feat_cols = train_model_long()
+
+    if not models:
+        log_event('error', 'No LONG models available, skipping rebalance')
+        return state
+
+    # Close any remaining long positions
+    if state.get('positions_long'):
+        symbols = [p['symbol'] for p in state['positions_long']]
+        prices = fetch_current_prices(symbols)
+        trades = load_trades_long()
+        n_positions_at_entry = state.get('n_positions_at_entry_long', TOP_N_LONG)
+        for pos in state['positions_long']:
+            sym = pos['symbol']
+            current_price = prices.get(sym, pos.get('current_price', pos['entry_price']))
+            ret = (current_price / pos['entry_price'] - 1)
+            ret -= COST_PER_SIDE
+            pos['exit_price'] = current_price
+            pos['exit_time'] = datetime.now(timezone.utc).isoformat()
+            pos['exit_reason'] = 'rebalance'
+            pos['return'] = ret
+            trades.append(pos)
+            weight = 1.0 / n_positions_at_entry
+            state['equity_long'] *= (1 + ret * weight)
+            log_event('close', f"LONG REBALANCE CLOSE {sym}: ret={ret*100:.2f}%")
+        save_trades_long(trades)
+        state['positions_long'] = []
+
+    # Build live panel if not provided
+    if panel is None:
+        if symbols_info is None:
+            symbols_info = get_futures_symbols()
+        if len(symbols_info) < 15:
+            log_event('error', f'Only {len(symbols_info)} symbols found, need 15+')
+            return state
+        panel = build_live_panel(symbols_info)
+        if panel.empty:
+            log_event('error', 'Empty panel, cannot rebalance LONG')
+            return state
+        panel = compute_features_live(panel)
+
+    # Regime filter: skip if bearish
+    regime_ok, median_ret = check_regime_filter(panel)
+    if not regime_ok:
+        state['regime_skip_count'] = state.get('regime_skip_count', 0) + 1
+        state['last_rebalance_long'] = datetime.now(timezone.utc).isoformat()
+        log_event('regime', f'LONG skipped: bearish regime (median 7d ret={median_ret*100:.2f}%). Skip count: {state["regime_skip_count"]}')
+        # Record equity snapshot even when skipping
+        equity_hist = load_equity_history_long()
+        equity_hist.append({
+            'timestamp': datetime.now(timezone.utc).isoformat(),
+            'equity': state['equity_long'],
+            'positions': 0,
+            'symbols': [],
+            'event': 'regime_skip',
+        })
+        save_equity_history_long(equity_hist)
+        return state
+
+    # Get latest cross-section
+    latest_date = panel.index.get_level_values('date').max()
+    cross = panel.loc[latest_date].copy()
+    cross = cross.dropna(subset=['mom_14'])
+
+    avail_feats = [f for f in feat_cols if f in cross.columns]
+    if len(avail_feats) < 10:
+        log_event('error', f'LONG: Only {len(avail_feats)} features available')
+        return state
+
+    X = np.nan_to_num(cross[avail_feats].values, nan=0, posinf=0, neginf=0)
+
+    # Ensemble prediction
+    scores = []
+    for m in models:
+        try:
+            s = m.predict(X)
+            s = (s - s.mean()) / (s.std() + 1e-10)
+            scores.append(s)
+        except Exception as e:
+            log_event('error', f'LONG model predict failed: {e}')
+
+    if not scores:
+        log_event('error', 'All LONG model predictions failed')
+        return state
+
+    cross = cross.copy()
+    cross['score'] = np.mean(scores, axis=0)
+    cross = cross.sort_values('score', ascending=False)  # highest score = best = long
+
+    # Select top N to go long
+    long_syms = cross.head(TOP_N_LONG).index.tolist()
+
+    # Get entry prices
+    prices = fetch_current_prices(long_syms)
+    funding_rates = fetch_current_funding(long_syms)
+
+    # Open positions
+    now = datetime.now(timezone.utc).isoformat()
+    new_positions = []
+    for sym in long_syms:
+        price = prices.get(sym)
+        if price is None or price <= 0:
+            continue
+        pos = {
+            'symbol': sym,
+            'direction': 'long',
+            'entry_price': price,
+            'entry_time': now,
+            'peak': price,
+            'current_price': price,
+            'score': float(cross.loc[sym, 'score']),
+            'funding_rate': funding_rates.get(sym, 0),
+            'unrealized_pnl': 0.0,
+            'days_held': 0,
+        }
+        new_positions.append(pos)
+        log_event('open', f"LONG {sym} @ {price:.4f} (score={pos['score']:.3f})",
+                  {'funding_rate': pos['funding_rate']})
+
+    # Deduct entry costs
+    state['equity_long'] *= (1 - COST_PER_SIDE * len(new_positions) / max(len(new_positions), 1))
+    state['positions_long'] = new_positions
+    state['n_positions_at_entry_long'] = len(new_positions)
+    state['last_rebalance_long'] = now
+    state['total_trades_long'] = state.get('total_trades_long', 0) + len(new_positions)
+
+    # Record equity snapshot
+    equity_hist = load_equity_history_long()
+    equity_hist.append({
+        'timestamp': now,
+        'equity': state['equity_long'],
+        'positions': len(new_positions),
+        'symbols': [p['symbol'] for p in new_positions],
+        'event': 'rebalance',
+    })
+    save_equity_history_long(equity_hist)
+
+    log_event('rebalance', f"Opened {len(new_positions)} longs. Equity: ${state['equity_long']:,.2f}")
+    return state
+
+
+# ════════════════════════════════════════════
 # MONITORING CYCLE
 # ════════════════════════════════════════════
 
 def run_cycle():
-    """Run one monitoring cycle: check stops, maybe rebalance."""
+    """Run one monitoring cycle: check stops, maybe rebalance. Handles BOTH strategies."""
     state = load_state()
 
-    # Check if we need to rebalance
-    needs_rebalance = False
+    # Keep equity_short in sync with equity (backward compat)
+    state['equity_short'] = state.get('equity', state.get('equity_short', INITIAL_CAPITAL * CAPITAL_SPLIT))
+
+    # ── SHORT STRATEGY ──────────────────────────
+    needs_rebalance_short = False
     if state['last_rebalance'] is None:
-        needs_rebalance = True
+        needs_rebalance_short = True
     else:
         last = pd.Timestamp(state['last_rebalance'])
         days_since = (pd.Timestamp.now(tz='UTC') - last).days
         if days_since >= HOLDING_DAYS:
-            needs_rebalance = True
-        # Also rebalance if all positions were stopped out
+            needs_rebalance_short = True
         if not state['positions']:
-            needs_rebalance = True
+            needs_rebalance_short = True
 
-    if needs_rebalance:
+    # ── LONG STRATEGY ──────────────────────────
+    needs_rebalance_long = False
+    if state.get('last_rebalance_long') is None:
+        needs_rebalance_long = True
+    else:
+        last_long = pd.Timestamp(state['last_rebalance_long'])
+        days_since_long = (pd.Timestamp.now(tz='UTC') - last_long).days
+        if days_since_long >= REBALANCE_LONG:
+            needs_rebalance_long = True
+        if not state.get('positions_long'):
+            needs_rebalance_long = True
+
+    # Build shared panel if either strategy needs rebalance
+    shared_panel = None
+    shared_symbols_info = None
+    if needs_rebalance_short or needs_rebalance_long:
+        shared_symbols_info = get_futures_symbols()
+        if len(shared_symbols_info) >= 15:
+            log_event('data', f'Building shared live panel for {len(shared_symbols_info)} symbols')
+            shared_panel = build_live_panel(shared_symbols_info)
+            if not shared_panel.empty:
+                shared_panel = compute_features_live(shared_panel)
+            else:
+                shared_panel = None
+
+    # ── Run SHORT rebalance ──
+    if needs_rebalance_short:
         state = rebalance(state)
     else:
-        # Just check stops and update prices
+        # Just check stops and update prices for SHORT
         state, closed = check_stops(state)
         if closed:
-            log_event('monitor', f'{len(closed)} positions stopped out')
+            log_event('monitor', f'SHORT: {len(closed)} positions stopped out')
 
-        # Apply funding cost on open short positions (Binance: 3x/day, our cycle: 4h = 0.5 funding periods)
+        # Apply funding cost on open short positions
         if state['positions']:
             funding_rates = fetch_current_funding([p['symbol'] for p in state['positions']])
             n_positions_at_entry = state.get('n_positions_at_entry', TOP_N)
@@ -713,28 +1169,25 @@ def run_cycle():
             for pos in state['positions']:
                 rate = funding_rates.get(pos['symbol'], pos.get('funding_rate', 0))
                 pos['funding_rate'] = rate
-                # Short pays funding when rate > 0, receives when rate < 0
-                # Each position has weight 1/n_positions_at_entry of equity
-                # Funding is applied per 8h; our cycle is 4h = 0.5 funding periods
                 funding_cost = rate * 0.5 * (1.0 / n_positions_at_entry)
                 total_funding_cost += funding_cost
             if total_funding_cost != 0:
                 state['equity'] *= (1 - total_funding_cost)
                 state['cumulative_funding'] = state.get('cumulative_funding', 0.0) + total_funding_cost * state['equity']
                 if closed:
-                    log_event('funding', f'Funding cost: {total_funding_cost*100:.4f}% (cumul ${state["cumulative_funding"]:.2f})')
+                    log_event('funding', f'SHORT funding cost: {total_funding_cost*100:.4f}% (cumul ${state["cumulative_funding"]:.2f})')
 
-        # Accrue stablecoin yield on idle capital
+        # Accrue stablecoin yield on idle SHORT capital
         n_open = len(state['positions'])
         idle_fraction = (TOP_N - n_open) / TOP_N
         if idle_fraction > 0:
             yield_amount = state['equity'] * idle_fraction * STABLE_YIELD_PER_4H
             state['equity'] += yield_amount
             state['cumulative_yield'] = state.get('cumulative_yield', 0.0) + yield_amount
-            if closed:  # only log when something changed, avoid spamming every 4h
-                log_event('yield', f'Idle {idle_fraction:.0%} of capital, accrued ${yield_amount:.4f} (cumul ${state["cumulative_yield"]:.2f})')
+            if closed:
+                log_event('yield', f'SHORT idle {idle_fraction:.0%}, accrued ${yield_amount:.4f} (cumul ${state["cumulative_yield"]:.2f})')
 
-        # Record equity snapshot with current unrealized PnL
+        # Record SHORT equity snapshot
         if state['positions']:
             symbols = [p['symbol'] for p in state['positions']]
             prices = fetch_current_prices(symbols)
@@ -761,7 +1214,6 @@ def run_cycle():
             })
             save_equity_history(equity_hist)
         else:
-            # All positions closed, still accrue and record
             equity_hist = load_equity_history()
             equity_hist.append({
                 'timestamp': datetime.now(timezone.utc).isoformat(),
@@ -774,6 +1226,78 @@ def run_cycle():
             })
             save_equity_history(equity_hist)
 
+    # Keep equity_short in sync
+    state['equity_short'] = state['equity']
+
+    # ── Run LONG rebalance ──
+    if needs_rebalance_long:
+        state = rebalance_long(state, panel=shared_panel, symbols_info=shared_symbols_info)
+    else:
+        # Check stops for LONG positions
+        state, closed_long = check_stops_long(state)
+        if closed_long:
+            log_event('monitor', f'LONG: {len(closed_long)} positions closed')
+
+        # Apply funding cost on open long positions (long RECEIVES funding when rate > 0)
+        if state.get('positions_long'):
+            funding_rates = fetch_current_funding([p['symbol'] for p in state['positions_long']])
+            n_positions_at_entry = state.get('n_positions_at_entry_long', TOP_N_LONG)
+            total_funding_effect = 0.0
+            for pos in state['positions_long']:
+                rate = funding_rates.get(pos['symbol'], pos.get('funding_rate', 0))
+                pos['funding_rate'] = rate
+                # Long pays funding when rate > 0, receives when rate < 0 (opposite of short)
+                funding_effect = -rate * 0.5 * (1.0 / n_positions_at_entry)
+                total_funding_effect += funding_effect
+            if total_funding_effect != 0:
+                state['equity_long'] *= (1 + total_funding_effect)
+                state['cumulative_funding_long'] = state.get('cumulative_funding_long', 0.0) - total_funding_effect * state['equity_long']
+
+        # Accrue stablecoin yield on idle LONG capital
+        n_open_long = len(state.get('positions_long', []))
+        idle_fraction_long = (TOP_N_LONG - n_open_long) / TOP_N_LONG
+        if idle_fraction_long > 0:
+            yield_amount = state['equity_long'] * idle_fraction_long * STABLE_YIELD_PER_4H
+            state['equity_long'] += yield_amount
+            state['cumulative_yield_long'] = state.get('cumulative_yield_long', 0.0) + yield_amount
+
+        # Record LONG equity snapshot
+        if state.get('positions_long'):
+            symbols = [p['symbol'] for p in state['positions_long']]
+            prices = fetch_current_prices(symbols)
+            unrealized = 0
+            for pos in state['positions_long']:
+                cp = prices.get(pos['symbol'], pos['current_price'])
+                pos['current_price'] = cp
+                pos['unrealized_pnl'] = (cp / pos['entry_price'] - 1)
+                unrealized += pos['unrealized_pnl']
+
+            n_at_entry = state.get('n_positions_at_entry_long', TOP_N_LONG)
+            avg_unreal = unrealized / n_at_entry if state['positions_long'] else 0
+            mark_equity = state['equity_long'] * (1 + avg_unreal)
+
+            equity_hist_long = load_equity_history_long()
+            equity_hist_long.append({
+                'timestamp': datetime.now(timezone.utc).isoformat(),
+                'equity': state['equity_long'],
+                'mark_equity': mark_equity,
+                'unrealized_pnl_pct': avg_unreal * 100,
+                'positions': len(state['positions_long']),
+                'event': 'monitor',
+            })
+            save_equity_history_long(equity_hist_long)
+        else:
+            equity_hist_long = load_equity_history_long()
+            equity_hist_long.append({
+                'timestamp': datetime.now(timezone.utc).isoformat(),
+                'equity': state['equity_long'],
+                'mark_equity': state['equity_long'],
+                'unrealized_pnl_pct': 0.0,
+                'positions': 0,
+                'event': 'idle',
+            })
+            save_equity_history_long(equity_hist_long)
+
     save_state(state)
     return state
 
@@ -782,27 +1306,32 @@ def print_status():
     """Print current paper trading status."""
     state = load_state()
     trades = load_trades()
+    trades_long = load_trades_long()
     equity_hist = load_equity_history()
 
+    short_eq = state.get('equity', state.get('equity_short', INITIAL_CAPITAL * CAPITAL_SPLIT))
+    long_eq = state.get('equity_long', INITIAL_CAPITAL * (1 - CAPITAL_SPLIT))
+    total_eq = short_eq + long_eq
+    short_cap = INITIAL_CAPITAL * CAPITAL_SPLIT
+    long_cap = INITIAL_CAPITAL * (1 - CAPITAL_SPLIT)
+
     print("\n" + "=" * 60)
-    print("  PAPER TRADING STATUS — CatBoost Short-Only")
+    print("  PAPER TRADING STATUS — CatBoost Short + Long")
     print("=" * 60)
-    print(f"  Started:      {state.get('started_at', 'N/A')[:10]}")
-    print(f"  Capital:      ${INITIAL_CAPITAL:,.0f}")
-    print(f"  Equity:       ${state['equity']:,.2f}")
-    ret = (state['equity'] / INITIAL_CAPITAL - 1) * 100
-    print(f"  Return:       {ret:+.2f}%")
-    print(f"  Total Trades: {state['total_trades']}")
-    cum_yield = state.get('cumulative_yield', 0.0)
-    if cum_yield > 0:
-        print(f"  Stable Yield: ${cum_yield:,.2f} ({cum_yield/INITIAL_CAPITAL*100:.2f}%)")
-    idle_frac = (TOP_N - len(state.get('positions', []))) / TOP_N
-    if idle_frac > 0:
-        print(f"  Idle Capital: {idle_frac:.0%} → earning {STABLE_APY*100:.1f}% APY")
+    print(f"  Started:        {state.get('started_at', 'N/A')[:10]}")
+    print(f"  Total Capital:  ${INITIAL_CAPITAL:,.0f}")
+    print(f"  Total Equity:   ${total_eq:,.2f} ({(total_eq/INITIAL_CAPITAL-1)*100:+.2f}%)")
+    print()
+
+    # SHORT
+    print(f"  ── SHORT STRATEGY ──")
+    print(f"  Capital:      ${short_cap:,.0f}")
+    print(f"  Equity:       ${short_eq:,.2f} ({(short_eq/short_cap-1)*100:+.2f}%)")
+    print(f"  Trades:       {state.get('total_trades', 0)}")
     print(f"  Last Rebal:   {state.get('last_rebalance', 'Never')}")
 
     if state['positions']:
-        print(f"\n  OPEN POSITIONS ({len(state['positions'])}):")
+        print(f"\n  SHORT POSITIONS ({len(state['positions'])}):")
         print(f"  {'Symbol':12s} {'Entry':>10s} {'Current':>10s} {'PnL':>8s} {'Days':>5s}")
         print(f"  {'-'*50}")
         for p in state['positions']:
@@ -810,30 +1339,37 @@ def print_status():
             days = p.get('days_held', 0)
             print(f"  {p['symbol']:12s} {p['entry_price']:10.4f} {p.get('current_price', 0):10.4f} {pnl:+7.2f}% {days:5d}")
 
-    if trades:
-        # Recent trades
-        recent = trades[-10:]
-        wins = sum(1 for t in trades if t.get('return', 0) > 0)
-        avg_ret = np.mean([t.get('return', 0) for t in trades]) * 100 if trades else 0
+    # LONG
+    print(f"\n  ── LONG STRATEGY ──")
+    print(f"  Capital:      ${long_cap:,.0f}")
+    print(f"  Equity:       ${long_eq:,.2f} ({(long_eq/long_cap-1)*100:+.2f}%)")
+    print(f"  Trades:       {state.get('total_trades_long', 0)}")
+    print(f"  Last Rebal:   {state.get('last_rebalance_long', 'Never')}")
+    print(f"  Regime Skips: {state.get('regime_skip_count', 0)}")
 
-        print(f"\n  TRADE STATS:")
-        print(f"  Win Rate:     {wins}/{len(trades)} ({wins/len(trades)*100:.0f}%)")
-        print(f"  Avg Return:   {avg_ret:+.2f}%")
+    if state.get('positions_long'):
+        print(f"\n  LONG POSITIONS ({len(state['positions_long'])}):")
+        print(f"  {'Symbol':12s} {'Entry':>10s} {'Current':>10s} {'PnL':>8s} {'Days':>5s}")
+        print(f"  {'-'*50}")
+        for p in state['positions_long']:
+            pnl = p.get('unrealized_pnl', 0) * 100
+            days = p.get('days_held', 0)
+            print(f"  {p['symbol']:12s} {p['entry_price']:10.4f} {p.get('current_price', 0):10.4f} {pnl:+7.2f}% {days:5d}")
 
-        print(f"\n  RECENT TRADES:")
-        print(f"  {'Symbol':12s} {'Entry':>10s} {'Exit':>10s} {'Return':>8s} {'Reason':12s}")
-        print(f"  {'-'*55}")
-        for t in recent:
-            ret = t.get('return', 0) * 100
-            print(f"  {t['symbol']:12s} {t['entry_price']:10.4f} {t.get('exit_price',0):10.4f} {ret:+7.2f}% {t.get('exit_reason','?'):12s}")
-
-    if equity_hist:
-        n = len(equity_hist)
-        if n >= 2:
-            first = equity_hist[0]['equity']
-            last_eq = equity_hist[-1].get('mark_equity', equity_hist[-1]['equity'])
-            total_ret = (last_eq / first - 1) * 100
-            print(f"\n  EQUITY HISTORY: {n} snapshots, total return: {total_ret:+.2f}%")
+    # Trade stats
+    for label, t_list in [("SHORT", trades), ("LONG", trades_long)]:
+        if t_list:
+            wins = sum(1 for t in t_list if t.get('return', 0) > 0)
+            avg_ret = np.mean([t.get('return', 0) for t in t_list]) * 100
+            print(f"\n  {label} TRADE STATS:")
+            print(f"  Win Rate:     {wins}/{len(t_list)} ({wins/len(t_list)*100:.0f}%)")
+            print(f"  Avg Return:   {avg_ret:+.2f}%")
+            recent = t_list[-5:]
+            print(f"  {'Symbol':12s} {'Entry':>10s} {'Exit':>10s} {'Return':>8s} {'Reason':12s}")
+            print(f"  {'-'*55}")
+            for t in recent:
+                ret = t.get('return', 0) * 100
+                print(f"  {t['symbol']:12s} {t['entry_price']:10.4f} {t.get('exit_price',0):10.4f} {ret:+7.2f}% {t.get('exit_reason','?'):12s}")
 
     print("=" * 60 + "\n")
 
@@ -867,12 +1403,23 @@ if __name__ == '__main__':
         print_status()
     elif args.retrain:
         train_model()
-        print("Model retrained successfully.")
+        train_model_long()
+        print("Both SHORT and LONG models retrained successfully.")
     elif args.reset:
-        for f in [STATE_FILE, TRADES_FILE, EQUITY_FILE, LOG_FILE]:
+        for f in [STATE_FILE, TRADES_FILE, EQUITY_FILE, LOG_FILE,
+                  TRADES_LONG_FILE, EQUITY_LONG_FILE]:
             if f.exists():
                 f.unlink()
-        print("Paper trading state reset.")
+        # Also remove long model files
+        for i in range(N_ENSEMBLE):
+            lm = PAPER_DIR / f'model_long_{i}.cbm'
+            if lm.exists():
+                lm.unlink()
+        for meta in ['model_meta_long.json', 'feature_importance_long.json']:
+            mp = PAPER_DIR / meta
+            if mp.exists():
+                mp.unlink()
+        print("Paper trading state reset (both short and long).")
     elif args.daemon:
         run_daemon()
     else:

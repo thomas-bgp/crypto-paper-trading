@@ -2,8 +2,9 @@
 set -e
 
 echo "============================================"
-echo "  CatBoost Short-Only — Paper Trading"
-echo "  HOLDING: 5 days | Fixed weight: 1/N"
+echo "  CatBoost Short + Long — Paper Trading"
+echo "  SHORT: 5d hold, 15% trail, bottom 5"
+echo "  LONG:  2d hold, 5% trail, top 5 + filter"
 echo "============================================"
 
 cd /app
@@ -19,13 +20,21 @@ fi
 
 cd /app/src
 
-# Train model if not present (but don't wipe state)
+# Train models if not present (but don't wipe state)
 if [ ! -f /app/paper_trading/model_ensemble.cbm.0 ] && [ ! -f /app/paper_trading/model_meta.json ]; then
-    echo "[INIT] No model found — training..."
+    echo "[INIT] No short model found — training..."
     python -u paper_trading.py --retrain
-    echo "[INIT] Model trained."
+    echo "[INIT] Models trained (short + long)."
 else
-    echo "[INIT] Model already exists, skipping retrain."
+    echo "[INIT] Short model exists."
+    # Always check if long model needs training
+    if [ ! -f /app/paper_trading/model_long_0.cbm ]; then
+        echo "[INIT] No long model found — training..."
+        python -u paper_trading.py --retrain
+        echo "[INIT] Long model trained."
+    else
+        echo "[INIT] Long model exists."
+    fi
 fi
 
 # Run one cycle
