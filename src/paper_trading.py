@@ -941,19 +941,46 @@ def check_stops_long(state):
 
 
 def check_regime_filter(panel):
-    """Regime filter for LONG strategy: skip if market median 7d return < 0."""
+    """Regime filter R3: breadth + breadth momentum.
+    Returns (direction, size_fraction, regime_info).
+    direction: 'long', 'short', or 'cash'
+    """
     try:
-        # Compute 7-day return for each symbol in the latest cross-section
         g = panel.groupby(level='symbol')
         ret_7d = g['close'].transform(lambda x: x.pct_change(7))
         latest_date = panel.index.get_level_values('date').max()
         cross_ret = ret_7d.loc[latest_date]
+
+        # Current breadth: % of coins with positive 7d return
+        breadth = (cross_ret > 0).mean()
+
+        # Breadth 5 days ago (approximate with earlier date)
+        dates = panel.index.get_level_values('date').unique().sort_values()
+        prev_date_idx = max(0, len(dates) - 6)
+        prev_date = dates[prev_date_idx]
+        prev_ret = ret_7d.loc[prev_date] if prev_date in ret_7d.index.get_level_values('date') else cross_ret
+        prev_breadth = (prev_ret > 0).mean()
+        breadth_delta = breadth - prev_breadth
+
         median_ret = cross_ret.median()
-        log_event('regime', f'Median 7d return: {median_ret*100:.2f}% (threshold: 0%)')
-        return median_ret >= 0, median_ret
+
+        # R3 logic: breadth level + breadth momentum
+        if breadth < 0.35 or (breadth < 0.45 and breadth_delta < -0.05):
+            direction = 'short'
+            size_frac = 1.0
+        elif breadth > 0.55 or (breadth > 0.45 and breadth_delta > 0.05):
+            direction = 'long'
+            size_frac = 1.0
+        else:
+            direction = 'cash'
+            size_frac = 0.0
+
+        regime_info = f'breadth={breadth:.2f} delta={breadth_delta:+.2f} medret={median_ret*100:+.1f}% -> {direction}'
+        log_event('regime', regime_info)
+        return direction, size_frac, median_ret
     except Exception as e:
         log_event('error', f'Regime filter failed: {e}')
-        return True, 0.0  # default to allowing trades if filter fails
+        return 'long', 1.0, 0.0  # default to long if filter fails
 
 
 def rebalance_long(state, panel=None, symbols_info=None):
@@ -1005,13 +1032,12 @@ def rebalance_long(state, panel=None, symbols_info=None):
             return state
         panel = compute_features_live(panel)
 
-    # Regime filter: skip if bearish
-    regime_ok, median_ret = check_regime_filter(panel)
-    if not regime_ok:
+    # Use regime already computed in run_cycle()
+    regime_direction = state.get('regime_direction', 'long')
+    if regime_direction != 'long':
         state['regime_skip_count'] = state.get('regime_skip_count', 0) + 1
         state['last_rebalance_long'] = datetime.now(timezone.utc).isoformat()
-        log_event('regime', f'LONG skipped: bearish regime (median 7d ret={median_ret*100:.2f}%). Skip count: {state["regime_skip_count"]}')
-        # Record equity snapshot even when skipping
+        log_event('regime', f'LONG skipped: regime={regime_direction}. Skip count: {state["regime_skip_count"]}')
         equity_hist = load_equity_history_long()
         equity_hist.append({
             'timestamp': datetime.now(timezone.utc).isoformat(),
@@ -1019,6 +1045,7 @@ def rebalance_long(state, panel=None, symbols_info=None):
             'positions': 0,
             'symbols': [],
             'event': 'regime_skip',
+            'regime': regime_direction,
         })
         save_equity_history_long(equity_hist)
         return state
@@ -1154,9 +1181,25 @@ def run_cycle():
             else:
                 shared_panel = None
 
-    # ── Run SHORT rebalance ──
+    # ── COMPUTE REGIME ONCE (before any rebalance) ──
+    regime_dir = 'long'  # default
+    if shared_panel is not None and (needs_rebalance_short or needs_rebalance_long):
+        regime_dir, _, _ = check_regime_filter(shared_panel)
+        state['regime_direction'] = regime_dir
+        log_event('regime', f'Regime decision: {regime_dir}')
+
+    # ── Run SHORT rebalance (only when regime says short) ──
     if needs_rebalance_short:
-        state = rebalance(state)
+        if regime_dir == 'short':
+            log_event('regime', 'SHORT activated: bearish regime detected')
+            state = rebalance(state)
+        else:
+            # Not a short regime — close any open shorts and skip
+            if state['positions']:
+                log_event('regime', f'SHORT skipped: regime={regime_dir}. Closing {len(state["positions"])} open shorts.')
+                # Let them run to expiry via normal stop/hold logic
+            else:
+                log_event('regime', f'SHORT skipped: regime={regime_dir}, no open positions')
     else:
         # Just check stops and update prices for SHORT
         state, closed = check_stops(state)
