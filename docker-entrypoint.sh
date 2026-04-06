@@ -2,40 +2,28 @@
 set -e
 
 echo "============================================"
-echo "  CatBoost Short + Long — Paper Trading"
-echo "  SHORT: 5d hold, 15% trail, bottom 5"
-echo "  LONG:  2d hold, 5% trail, top 5 + filter"
+echo "  Adaptive Strategy — Paper Trading"
+echo "  Regime R3: breadth + breadth momentum"
+echo "  BULL  -> LONG top 10%, hold 2d, trail 5%"
+echo "  BEAR  -> SHORT bottom 5, hold 5d, trail 15%"
+echo "  CASH  -> no trades (ambiguous regime)"
 echo "============================================"
 
 cd /app
 
-# Seed persistent volume if empty (first deploy or fresh volume)
-if [ ! -f paper_trading/state.json ]; then
-    echo "[INIT] Volume empty — seeding with corrected historical data..."
-    cp paper_trading_seed/*.json paper_trading/
-    echo "[INIT] Seeded: state.json, trades.json, equity.json"
-else
-    echo "[INIT] Existing data found in volume, preserving."
-fi
+# FORCE RESET: always reseed from scratch on this deploy
+echo "[INIT] Resetting state — fresh start for adaptive strategy..."
+cp paper_trading_seed/*.json paper_trading/
+# Remove old models to force retrain
+rm -f paper_trading/model_*.cbm paper_trading/model_meta*.json paper_trading/feature_importance*.json paper_trading/log.jsonl
+echo "[INIT] State reset. Old models cleared."
 
 cd /app/src
 
-# Train models if not present (but don't wipe state)
-if [ ! -f /app/paper_trading/model_ensemble.cbm.0 ] && [ ! -f /app/paper_trading/model_meta.json ]; then
-    echo "[INIT] No short model found — training..."
-    python -u paper_trading.py --retrain
-    echo "[INIT] Models trained (short + long)."
-else
-    echo "[INIT] Short model exists."
-    # Always check if long model needs training
-    if [ ! -f /app/paper_trading/model_long_0.cbm ]; then
-        echo "[INIT] No long model found — training..."
-        python -u paper_trading.py --retrain
-        echo "[INIT] Long model trained."
-    else
-        echo "[INIT] Long model exists."
-    fi
-fi
+# Train both models (fresh start)
+echo "[INIT] Training short + long models..."
+python -u paper_trading.py --retrain
+echo "[INIT] Models trained."
 
 # Run one cycle
 echo "[INIT] Running trading cycle..."
