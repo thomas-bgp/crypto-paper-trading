@@ -47,7 +47,8 @@ STABLE_YIELD_PER_4H = STABLE_APY / 365 / 6  # yield per 4h cycle
 
 # ─── Config: LONG strategy ───
 HOLDING_DAYS_LONG = 2          # 2 days holding (faster exit)
-TOP_N_LONG = 5                 # Top 5 by max score
+LONG_PCT = 0.10                # Top 10% of universe by max score
+MAX_POSITIONS_LONG = 10        # Cap at 10 positions
 TRAILING_LONG = 0.05           # 5% trailing stop below high
 HARD_STOP_LONG = 0.08          # 8% hard stop below entry
 REBALANCE_LONG = 5             # Rebalance every 5 days (same schedule as short)
@@ -923,7 +924,7 @@ def check_stops_long(state):
                       f"LONG {exit_reason.upper()} {sym}: entry={pos['entry_price']:.4f} exit={current_price:.4f} ret={ret*100:.2f}%")
 
     # Apply closed PnL
-    n_positions_at_entry = state.get('n_positions_at_entry_long', TOP_N_LONG)
+    n_positions_at_entry = state.get('n_positions_at_entry_long', MAX_POSITIONS_LONG)
     for pos in closed:
         weight = 1.0 / n_positions_at_entry
         state['equity_long'] *= (1 + pos['return'] * weight)
@@ -974,7 +975,7 @@ def rebalance_long(state, panel=None, symbols_info=None):
         symbols = [p['symbol'] for p in state['positions_long']]
         prices = fetch_current_prices(symbols)
         trades = load_trades_long()
-        n_positions_at_entry = state.get('n_positions_at_entry_long', TOP_N_LONG)
+        n_positions_at_entry = state.get('n_positions_at_entry_long', MAX_POSITIONS_LONG)
         for pos in state['positions_long']:
             sym = pos['symbol']
             current_price = prices.get(sym, pos.get('current_price', pos['entry_price']))
@@ -1052,8 +1053,9 @@ def rebalance_long(state, panel=None, symbols_info=None):
     cross['score'] = np.mean(scores, axis=0)
     cross = cross.sort_values('score', ascending=False)  # highest score = best = long
 
-    # Select top N to go long
-    long_syms = cross.head(TOP_N_LONG).index.tolist()
+    # Select top 10% of universe, max MAX_POSITIONS_LONG
+    n_long = max(3, int(len(cross) * LONG_PCT))
+    long_syms = cross.head(min(n_long, MAX_POSITIONS_LONG)).index.tolist()
 
     # Get entry prices
     prices = fetch_current_prices(long_syms)
@@ -1241,7 +1243,7 @@ def run_cycle():
         # Apply funding cost on open long positions (long RECEIVES funding when rate > 0)
         if state.get('positions_long'):
             funding_rates = fetch_current_funding([p['symbol'] for p in state['positions_long']])
-            n_positions_at_entry = state.get('n_positions_at_entry_long', TOP_N_LONG)
+            n_positions_at_entry = state.get('n_positions_at_entry_long', MAX_POSITIONS_LONG)
             total_funding_effect = 0.0
             for pos in state['positions_long']:
                 rate = funding_rates.get(pos['symbol'], pos.get('funding_rate', 0))
@@ -1255,7 +1257,7 @@ def run_cycle():
 
         # Accrue stablecoin yield on idle LONG capital
         n_open_long = len(state.get('positions_long', []))
-        idle_fraction_long = (TOP_N_LONG - n_open_long) / TOP_N_LONG
+        idle_fraction_long = (MAX_POSITIONS_LONG - n_open_long) / MAX_POSITIONS_LONG
         if idle_fraction_long > 0:
             yield_amount = state['equity_long'] * idle_fraction_long * STABLE_YIELD_PER_4H
             state['equity_long'] += yield_amount
@@ -1272,7 +1274,7 @@ def run_cycle():
                 pos['unrealized_pnl'] = (cp / pos['entry_price'] - 1)
                 unrealized += pos['unrealized_pnl']
 
-            n_at_entry = state.get('n_positions_at_entry_long', TOP_N_LONG)
+            n_at_entry = state.get('n_positions_at_entry_long', MAX_POSITIONS_LONG)
             avg_unreal = unrealized / n_at_entry if state['positions_long'] else 0
             mark_equity = state['equity_long'] * (1 + avg_unreal)
 
