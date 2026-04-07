@@ -1,9 +1,15 @@
 """
-Paper Trading Engine — CatBoost Short + Long Strategy
-Runs ML models against LIVE Binance data without real capital.
-Two independent strategies sharing the same data pipeline:
-  - SHORT: CatBoost YetiRank targeting fwd_min (losers). Original baseline.
-  - LONG:  CatBoost YetiRank targeting fwd_max (winners). Regime-filtered.
+Paper Trading Engine — CatBoost R3 Regime Strategy (ALIGNED WITH BACKTEST)
+Runs ML models against LIVE Binance SPOT data without real capital.
+
+MATCHES the validated regime_v2.py backtest exactly:
+  - SPOT data (not futures) — survivorship-bias free universe
+  - 60+ features from cv_spot.py compute_features()
+  - SINGLE CatBoostRanker per target (fwd_min, fwd_max) — NOT ensemble
+  - R3 regime: breadth + breadth momentum -> long/short/cash
+  - Long: top 10% by fwd_max, hold 2d, trail 5%, hard stop 8%
+  - Short: bottom 5 by fwd_min, hold 5d, trail trough*(1+15%)
+  - Vol targeting built into position sizing
 
 Usage:
     python paper_trading.py              # Run one cycle (cron-friendly)
@@ -32,40 +38,41 @@ RESULTS_DIR = PROJECT_DIR / 'results'
 PAPER_DIR = PROJECT_DIR / 'paper_trading'
 PAPER_DIR.mkdir(exist_ok=True)
 
-# ─── Config: SHORT strategy (original baseline, unchanged) ───
-HOLDING_DAYS = 5               # Changed from 14: signal decays fast, 5d captures more alpha
-TOP_N = 5
-UNIVERSE_TOP = 50
-COST_PER_SIDE = 0.002      # 0.20% simulated cost
-STOP_PCT = 0.15             # 15% trailing stop (short: price rises from trough)
-INITIAL_CAPITAL = 10_000    # paper capital (total, split between strategies)
-CAPITAL_SPLIT = 0.5         # 50% short, 50% long (configurable)
+# ─── Config: SHORT strategy (matches regime_v2.py backtest) ───
+HOLDING_DAYS = 5               # Short hold 5d (regime_v2 SHORT_HOLD=5)
+TOP_N = 5                      # Bottom 5 by fwd_min score (regime_v2 SHORT_TOP=5)
+UNIVERSE_TOP = 80              # Top 80 for TRAINING panel only (matches backtest filter_universe top_n=80)
+                               # Live universe: no cap — all pairs passing volume filter are included
+COST_PER_SIDE = 0.0011         # 0.11% per side (matches backtest COST=0.0011)
+STOP_PCT = 0.15                # 15% trailing stop: trough*(1+15%) (regime_v2 SHORT_TRAIL=0.15)
+INITIAL_CAPITAL = 10_000       # paper capital (total, split between strategies)
+CAPITAL_SPLIT = 0.5            # 50% short, 50% long (configurable)
 TRAIN_MONTHS = 18
-N_ENSEMBLE = 3
 STABLE_APY = 0.05              # 5% annual stablecoin yield on idle capital
 STABLE_YIELD_PER_4H = STABLE_APY / 365 / 6  # yield per 4h cycle
+FUND_COST = 0.0001             # Funding cost per period for shorts (regime_v2 FUND=0.0001)
 
-# ─── Config: LONG strategy ───
-HOLDING_DAYS_LONG = 2          # 2 days holding (faster exit)
-LONG_PCT = 0.10                # Top 10% of universe by max score
-MAX_POSITIONS_LONG = 10        # Cap at 10 positions
-TRAILING_LONG = 0.05           # 5% trailing stop below high
-HARD_STOP_LONG = 0.08          # 8% hard stop below entry
-REBALANCE_LONG = 5             # Rebalance every 5 days (same schedule as short)
+# ─── Config: LONG strategy (matches regime_v2.py backtest) ───
+HOLDING_DAYS_LONG = 2          # 2 days holding (regime_v2 LONG_HOLD=2)
+LONG_PCT = 0.10                # Top 10% of universe by max score (regime_v2 LONG_PCT=0.10)
+MAX_POSITIONS_LONG = 10        # Cap at 10 positions (regime_v2 LONG_MAX=10)
+TRAILING_LONG = 0.05           # 5% trailing stop below high (regime_v2 LONG_TRAIL=0.05)
+HARD_STOP_LONG = 0.08          # 8% hard stop below entry (regime_v2 LONG_HARD=0.08)
+REBALANCE_LONG = 5             # Rebalance every 5 days (regime_v2 REBAL=5)
 
-BINANCE_KLINES = "https://fapi.binance.com/fapi/v1/klines"
-BINANCE_TICKER = "https://fapi.binance.com/fapi/v1/ticker/24hr"
+# ─── Vol targeting (matches regime_v2.py) ───
+VOL_TARGET = 0.50
+
+# ─── Binance SPOT API (NOT futures — matches backtest which uses SPOT data) ───
+BINANCE_KLINES = "https://api.binance.com/api/v3/klines"
+BINANCE_TICKER = "https://api.binance.com/api/v3/ticker/24hr"
+# Futures endpoints still needed for funding rates and mark prices on short positions
 BINANCE_FUNDING = "https://fapi.binance.com/fapi/v1/fundingRate"
 BINANCE_MARK_PRICE = "https://fapi.binance.com/fapi/v1/premiumIndex"
 
-CORE_FEATURES = [
-    'mom_14', 'mom_28', 'mom_56', 'mom_14_skip1',
-    'poly_slope_28', 'poly_curve_28', 'poly_slope_56', 'poly_curve_56',
-    'rvol_28', 'vol_ratio', 'max_ret_28', 'min_ret_28',
-    'amihud', 'spread_28', 'turnover_28',
-    'rsi_14', 'macd_hist', 'donchian_pos',
-    'mom_14_csrank', 'rvol_28_csrank',
-]
+# Stablecoin / leveraged token filter (matches cv_spot.py)
+STABLECOINS = {'USDCUSDT', 'BUSDUSDT', 'TUSDUSDT', 'FDUSDUSDT', 'DAIUSDT', 'USTUSDT',
+               'EURUSDT', 'USDPUSDT', 'PAXUSDT'}
 
 CATBOOST_PARAMS = {
     'loss_function': 'YetiRank',
@@ -85,7 +92,8 @@ CATBOOST_PARAMS = {
 STATE_FILE = PAPER_DIR / 'state.json'
 TRADES_FILE = PAPER_DIR / 'trades.json'
 EQUITY_FILE = PAPER_DIR / 'equity.json'
-MODEL_FILE = PAPER_DIR / 'model_ensemble.cbm'
+MODEL_MIN_FILE = PAPER_DIR / 'model_fwd_min.cbm'   # Single model for fwd_min (short)
+MODEL_MAX_FILE = PAPER_DIR / 'model_fwd_max.cbm'   # Single model for fwd_max (long)
 LOG_FILE = PAPER_DIR / 'log.jsonl'
 
 # Long strategy state files (separate from short)
@@ -97,8 +105,11 @@ EQUITY_LONG_FILE = PAPER_DIR / 'equity_long.json'
 # BINANCE DATA (LIVE)
 # ════════════════════════════════════════════
 
-def get_futures_symbols(min_volume_usd=5_000_000):
-    """Get actively traded USDT-M futures sorted by volume."""
+def get_spot_symbols(min_volume_usd=5_000_000):
+    """Get actively traded SPOT USDT pairs sorted by 24h quote volume.
+    Live filter: all SPOT USDT pairs with 24h volume >= $5M, no artificial cap.
+    Could be 60-100+ coins depending on market conditions.
+    """
     try:
         resp = requests.get(BINANCE_TICKER, timeout=15)
         tickers = resp.json()
@@ -107,12 +118,18 @@ def get_futures_symbols(min_volume_usd=5_000_000):
             sym = t.get('symbol', '')
             if not sym.endswith('USDT') or '_' in sym:
                 continue
+            # Filter stablecoins (matches cv_spot.py STABLECOINS)
+            if sym in STABLECOINS:
+                continue
+            # Filter leveraged tokens (matches cv_spot.py)
+            if any(sym.endswith(s) for s in ['UPUSDT', 'DOWNUSDT', 'BULLUSDT', 'BEARUSDT']):
+                continue
             vol = float(t.get('quoteVolume', 0))
             if vol >= min_volume_usd:
                 result.append({'symbol': sym, 'volume_24h': vol, 'price': float(t.get('lastPrice', 0))})
-        return sorted(result, key=lambda x: -x['volume_24h'])[:UNIVERSE_TOP]
+        return sorted(result, key=lambda x: -x['volume_24h'])  # No cap — take all passing volume filter
     except Exception as e:
-        log_event('error', f'Failed to get futures symbols: {e}')
+        log_event('error', f'Failed to get spot symbols: {e}')
         return []
 
 
@@ -140,14 +157,16 @@ def fetch_recent_klines(symbol, interval='4h', limit=500):
 
 
 def fetch_current_prices(symbols):
-    """Get current mark prices for a list of symbols."""
+    """Get current SPOT prices for a list of symbols.
+    Uses SPOT ticker endpoint (not futures mark price).
+    """
     try:
-        resp = requests.get(BINANCE_MARK_PRICE, timeout=15)
+        resp = requests.get(BINANCE_TICKER, timeout=15)
         data = resp.json()
         prices = {}
         for item in data:
             if item['symbol'] in symbols:
-                prices[item['symbol']] = float(item['markPrice'])
+                prices[item['symbol']] = float(item['lastPrice'])
         return prices
     except Exception:
         return {}
@@ -199,346 +218,347 @@ def build_live_panel(symbols_info):
 
 
 def compute_features_live(panel):
-    """Compute the 20 core features on live panel (same logic as ml_features.py)."""
+    """Compute the FULL feature set on live panel.
+    Matches cv_spot.py compute_features() exactly — 60+ features including:
+    momentum, volatility, liquidity, technical, polynomial, market structure, cross-sectional.
+    """
     g = panel.groupby(level='symbol')
-    close = panel['close']
-    high = panel['high']
-    low = panel['low']
-    qvol = panel['quote_vol']
+    close, high, low, qvol = panel['close'], panel['high'], panel['low'], panel['quote_vol']
 
     panel['log_ret'] = g['close'].transform(lambda x: np.log(x / x.shift(1)))
 
-    # Momentum
-    for lb in [14, 28, 56]:
+    # ── Momentum (matches cv_spot.py) ──
+    for lb in [3, 5, 7, 14, 21, 28]:
         panel[f'mom_{lb}'] = g['close'].pct_change(lb)
-    panel['mom_14_skip1'] = g['close'].shift(1).transform(lambda x: x.pct_change(14))
+    for lb in [14, 28]:
+        panel[f'mom_{lb}_skip1'] = g['close'].shift(1).transform(lambda x: x.pct_change(lb))
+    panel['mom_robust'] = panel[['mom_21', 'mom_28']].mean(axis=1)
+    panel['mom_accel'] = panel['mom_14'] - panel['mom_28']
 
-    # Volatility
-    for w in [14, 28, 56]:
+    # ── Volatility ──
+    for w in [7, 14, 28]:
         panel[f'rvol_{w}'] = g['log_ret'].transform(lambda x: x.rolling(w).std() * np.sqrt(365))
-    panel['vol_ratio'] = panel['rvol_14'] / (panel['rvol_56'] + 1e-10)
+    panel['vol_of_vol'] = g['rvol_28'].transform(lambda x: x.rolling(28).std())
+    panel['skew_28'] = g['log_ret'].transform(lambda x: x.rolling(28).skew())
+    panel['kurt_28'] = g['log_ret'].transform(lambda x: x.rolling(28).kurt())
     panel['max_ret_28'] = g['log_ret'].transform(lambda x: x.rolling(28).max())
     panel['min_ret_28'] = g['log_ret'].transform(lambda x: x.rolling(28).min())
+    panel['downvol_28'] = panel['log_ret'].clip(upper=0).groupby(level='symbol').transform(
+        lambda x: x.rolling(28).std() * np.sqrt(365))
+    panel['vol_ratio'] = panel['rvol_7'] / (panel['rvol_28'] + 1e-10)
+    panel['up_down_vol'] = panel['rvol_28'] / (panel['downvol_28'] + 1e-10)
 
-    # Liquidity
+    # ── Liquidity ──
     panel['vol_avg_28'] = g['quote_vol'].transform(lambda x: x.rolling(28).mean())
+    panel['vol_ratio_7_28'] = g['quote_vol'].transform(lambda x: x.rolling(7).mean()) / (panel['vol_avg_28'] + 1)
     panel['turnover'] = qvol / (close * 1e6 + 1)
     panel['turnover_28'] = g['turnover'].transform(lambda x: x.rolling(28).mean())
     panel['amihud'] = (panel['log_ret'].abs() / (qvol + 1)).groupby(level='symbol').transform(
         lambda x: x.rolling(28).mean()) * 1e9
     panel['spread'] = 2 * (high - low) / (high + low + 1e-10)
     panel['spread_28'] = g['spread'].transform(lambda x: x.rolling(28).mean())
+    panel['vol_mom'] = g['quote_vol'].pct_change(14)
 
-    # Technical
+    # ── Technical ──
     delta = g['close'].diff()
-    gain = delta.clip(lower=0)
-    loss_s = (-delta).clip(lower=0)
-    ag = gain.groupby(level='symbol').transform(lambda x: x.ewm(span=14, adjust=False).mean())
-    al = loss_s.groupby(level='symbol').transform(lambda x: x.ewm(span=14, adjust=False).mean())
+    ag = delta.clip(lower=0).groupby(level='symbol').transform(lambda x: x.ewm(span=14, adjust=False).mean())
+    al = (-delta).clip(lower=0).groupby(level='symbol').transform(lambda x: x.ewm(span=14, adjust=False).mean())
     panel['rsi_14'] = 100 - 100 / (1 + ag / (al + 1e-10))
+
+    sma20 = g['close'].transform(lambda x: x.rolling(20).mean())
+    std20 = g['close'].transform(lambda x: x.rolling(20).std())
+    panel['bb_pctb'] = (close - (sma20 - 2 * std20)) / (4 * std20 + 1e-10)
+    panel['bb_width'] = 4 * std20 / (sma20 + 1e-10)
 
     ema12 = g['close'].transform(lambda x: x.ewm(span=12).mean())
     ema26 = g['close'].transform(lambda x: x.ewm(span=26).mean())
     macd = ema12 - ema26
-    signal = macd.groupby(level='symbol').transform(lambda x: x.ewm(span=9).mean())
-    panel['macd_hist'] = (macd - signal) / (close + 1e-10)
+    panel['macd_hist'] = (macd - macd.groupby(level='symbol').transform(
+        lambda x: x.ewm(span=9).mean())) / (close + 1e-10)
 
-    h20 = g['high'].transform(lambda x: x.rolling(20).max())
-    l20 = g['low'].transform(lambda x: x.rolling(20).min())
-    panel['donchian_pos'] = (close - l20) / (h20 - l20 + 1e-10)
+    panel['stoch_k'] = (close - g['low'].transform(lambda x: x.rolling(14).min())) / (
+        g['high'].transform(lambda x: x.rolling(14).max()) -
+        g['low'].transform(lambda x: x.rolling(14).min()) + 1e-10)
 
-    # Polynomial derivatives
-    for window in [28, 56]:
+    tp = (high + low + close) / 3
+    sma_tp = tp.groupby(level='symbol').transform(lambda x: x.rolling(20).mean())
+    mad_tp = tp.groupby(level='symbol').transform(
+        lambda x: x.rolling(20).apply(lambda v: np.abs(v - v.mean()).mean(), raw=True))
+    panel['cci'] = (tp - sma_tp) / (0.015 * mad_tp + 1e-10)
+
+    panel['donchian_pos'] = (close - g['low'].transform(lambda x: x.rolling(20).min())) / (
+        g['high'].transform(lambda x: x.rolling(20).max()) -
+        g['low'].transform(lambda x: x.rolling(20).min()) + 1e-10)
+
+    tr = pd.concat([high - low, (high - g['close'].shift(1)).abs(),
+                     (low - g['close'].shift(1)).abs()], axis=1).max(axis=1)
+    panel['atr_ratio'] = tr.groupby(level='symbol').transform(
+        lambda x: x.rolling(14).mean()) / (close + 1e-10)
+
+    for fast, slow in [(10, 50), (20, 100)]:
+        panel[f'ma_{fast}_{slow}'] = g['close'].transform(
+            lambda x: x.rolling(fast).mean()) / (
+            g['close'].transform(lambda x: x.rolling(slow).mean()) + 1e-10) - 1
+
+    panel['adx_proxy'] = (panel['mom_14'].abs() * panel['rvol_14']).clip(upper=5)
+
+    # ── Polynomial derivatives (14 and 28, matches cv_spot.py) ──
+    for window in [14, 28]:
         _compute_poly(panel, window)
 
-    # Cross-sectional
-    panel['mom_14_csrank'] = panel.groupby(level='date')['mom_14'].rank(pct=True)
-    panel['rvol_28_csrank'] = panel.groupby(level='date')['rvol_28'].rank(pct=True)
+    # ── Market structure (cross-date aggregates) ──
+    dg = panel.groupby(level='date')
+    panel['mkt_disp_7'] = dg['mom_7'].transform('std')
+    panel['mkt_breadth_7'] = dg['mom_7'].transform(lambda x: (x > 0).mean())
+    panel['mkt_med_ret_7'] = dg['mom_7'].transform('median')
+    panel['mkt_med_ret_28'] = dg['mom_28'].transform('median')
+    panel['mkt_avg_vol'] = dg['rvol_28'].transform('median')
+    panel['mkt_skew'] = dg['mom_7'].transform('skew')
+    panel['mkt_vol_conc'] = dg['vol_avg_28'].transform(
+        lambda x: x.nlargest(5).sum() / (x.sum() + 1e-10) if len(x) > 5 else np.nan)
+    panel['mkt_avg_spread'] = dg['spread_28'].transform('median')
+    panel['mkt_vol_disp'] = dg['rvol_28'].transform('std')
+
+    # ── Cross-sectional ranks ──
+    panel['cs_mom14'] = dg['mom_14'].rank(pct=True)
+    panel['cs_mom28'] = dg['mom_28'].rank(pct=True)
+    panel['cs_rvol28'] = dg['rvol_28'].rank(pct=True)
+    panel['cs_vol28'] = dg['vol_avg_28'].rank(pct=True)
+    panel['cs_spread'] = dg['spread_28'].rank(pct=True)
+
+    # ── Alpha signals ──
+    panel['alpha_7'] = panel['mom_7'] - panel['mkt_med_ret_7']
+    panel['alpha_28'] = panel['mom_28'] - panel['mkt_med_ret_28']
 
     return panel
 
 
-def _compute_poly(panel, window):
-    """Compute polynomial slope and curvature."""
-    results = {f'poly_slope_{window}': [], f'poly_curve_{window}': []}
-    x = np.arange(window, dtype=np.float64)
-    x_norm = (x - x.mean()) / (x.std() + 1e-10)
-    X = np.column_stack([x_norm**2, x_norm, np.ones(window)])
-    XtX_inv_Xt = np.linalg.pinv(X)
+def _compute_poly(panel, w):
+    """Compute polynomial slope, curvature, R2, and velocity. Matches cv_spot.py _poly()."""
+    res = {f'poly_slope_{w}': [], f'poly_curve_{w}': [], f'poly_r2_{w}': [], f'poly_velocity_{w}': []}
+    x = np.arange(w, dtype=np.float64)
+    xn = (x - x.mean()) / (x.std() + 1e-10)
+    X = np.column_stack([xn**2, xn, np.ones(w)])
+    P = np.linalg.pinv(X)
 
     for sym, grp in panel.groupby(level='symbol'):
         c = np.log(grp['close'].values + 1e-10)
         n = len(c)
-        slope = np.full(n, np.nan)
-        curve = np.full(n, np.nan)
-        for i in range(window, n):
-            y = c[i-window:i]
+        sl, cu, r2 = np.full(n, np.nan), np.full(n, np.nan), np.full(n, np.nan)
+        for i in range(w, n):
+            y = c[i - w:i]
             if np.any(np.isnan(y)):
                 continue
-            beta = XtX_inv_Xt @ y
-            slope[i] = beta[1]
-            curve[i] = beta[0]
+            b = P @ y
+            sl[i] = b[1]
+            cu[i] = b[0]
+            yp = X @ b
+            ssr = np.sum((y - yp)**2)
+            sst = np.sum((y - y.mean())**2)
+            r2[i] = 1 - ssr / (sst + 1e-10) if sst > 0 else 0
         idx = grp.index
-        results[f'poly_slope_{window}'].append(pd.Series(slope, index=idx))
-        results[f'poly_curve_{window}'].append(pd.Series(curve, index=idx))
+        res[f'poly_slope_{w}'].append(pd.Series(sl, index=idx))
+        res[f'poly_curve_{w}'].append(pd.Series(cu, index=idx))
+        res[f'poly_r2_{w}'].append(pd.Series(r2, index=idx))
+        res[f'poly_velocity_{w}'].append(pd.Series(sl + 2 * cu, index=idx))
 
-    for col, series_list in results.items():
+    for col, series_list in res.items():
         if series_list:
             panel[col] = pd.concat(series_list)
+
+
+def get_feature_cols(panel):
+    """Get feature column names from panel. Matches cv_spot.py get_features()."""
+    exclude = {'open', 'high', 'low', 'close', 'volume', 'quote_vol', 'log_ret',
+               'spread', 'turnover', 'vol_avg_28', 'fwd_max', 'fwd_min'}
+    return [c for c in panel.columns if c not in exclude and panel[c].dtype in ('float64', 'float32')]
 
 
 # ════════════════════════════════════════════
 # MODEL TRAINING
 # ════════════════════════════════════════════
 
-def train_model():
-    """Train CatBoost ensemble on historical data (same as backtest)."""
-    from catboost import CatBoostRanker
+def _load_training_panel():
+    """Load and prepare SPOT training panel with full features and targets.
+    Uses cv_spot.py-style data loading: SPOT parquets, survivorship-bias free.
+    Falls back to ml_features if spot data unavailable.
+    """
+    SPOT_DIR = 'C:/Projects/crypto-statarb-lab/spot_data/parquet'
+    MIN_CANDLES = 6 * 120  # matches cv_spot.py
 
-    log_event('train', 'Starting model training on historical data')
+    if os.path.exists(SPOT_DIR):
+        log_event('train', f'Loading SPOT parquets from {SPOT_DIR}')
+        frames = []
+        for f in os.listdir(SPOT_DIR):
+            if not f.endswith('_4h.parquet'):
+                continue
+            sym = f.replace('_4h.parquet', '')
+            if sym in STABLECOINS:
+                continue
+            if any(sym.endswith(s) for s in ['UPUSDT', 'DOWNUSDT', 'BULLUSDT', 'BEARUSDT']):
+                continue
+            try:
+                df = pd.read_parquet(os.path.join(SPOT_DIR, f))
+                if len(df) < MIN_CANDLES:
+                    continue
+                daily = df.resample('1D').agg({
+                    'open': 'first', 'high': 'max', 'low': 'min',
+                    'close': 'last', 'volume': 'sum'
+                }).dropna(subset=['close'])
+                if 'quote_vol' in df.columns:
+                    daily['quote_vol'] = df['quote_vol'].astype(float).resample('1D').sum()
+                else:
+                    daily['quote_vol'] = daily['volume'] * daily['close']
+                daily['symbol'] = sym
+                frames.append(daily)
+            except Exception:
+                continue
+        panel = pd.concat(frames).reset_index()
+        if 'open_time' in panel.columns:
+            panel = panel.rename(columns={'open_time': 'date'})
+        elif 'date' not in panel.columns:
+            panel = panel.rename(columns={panel.columns[0]: 'date'})
+        panel = panel.set_index(['date', 'symbol']).sort_index()
+    else:
+        # Fallback: use ml_features (futures data — less ideal but better than nothing)
+        log_event('train', 'WARNING: SPOT data not found, falling back to ml_features (futures)')
+        sys.path.insert(0, str(SCRIPT_DIR))
+        from ml_features import load_daily_panel
+        panel = load_daily_panel()
 
-    # Use the existing ml_features module
-    sys.path.insert(0, str(SCRIPT_DIR))
-    from ml_features import load_daily_panel, compute_all_features
+    # Filter universe (top N by rolling volume, matches cv_spot.py)
+    g = panel.groupby(level='symbol')
+    panel['_rv30'] = g['quote_vol'].transform(lambda x: x.rolling(30).mean())
+    vr = panel.groupby(level='date')['_rv30'].rank(ascending=False)
+    mask = (vr <= UNIVERSE_TOP) & (panel['_rv30'] >= 5_000_000)
+    panel = panel[mask].copy()
+    panel.drop(columns=['_rv30'], inplace=True)
 
-    panel = load_daily_panel()
-    panel = compute_all_features(panel)
+    log_event('train', f'Panel: {panel.shape[0]:,} rows, {panel.index.get_level_values("symbol").nunique()} symbols')
 
-    feat_cols = [f for f in CORE_FEATURES if f in panel.columns]
+    # Compute full features
+    panel = compute_features_live(panel)
+
+    # Compute targets: fwd_max and fwd_min (matches regime_v2.py exactly)
+    targets = []
+    for sym, grp in panel.groupby(level='symbol'):
+        c = grp['close'].values
+        n = len(c)
+        mn, mx = np.full(n, np.nan), np.full(n, np.nan)
+        for i in range(n - 5):
+            w = c[i + 1:i + 6]
+            b = c[i]
+            if b <= 0 or np.any(np.isnan(w)):
+                continue
+            mn[i] = w.min() / b - 1
+            mx[i] = w.max() / b - 1
+        targets.append(pd.DataFrame({'fwd_min': mn, 'fwd_max': mx}, index=grp.index))
+    tdf = pd.concat(targets)
+    panel['fwd_min'] = tdf['fwd_min']
+    panel['fwd_max'] = tdf['fwd_max']
+
+    feat_cols = get_feature_cols(panel)
+    # Remove targets from features if they snuck in
+    feat_cols = [f for f in feat_cols if f not in ('fwd_min', 'fwd_max')]
+
+    valid = panel[['fwd_min', 'fwd_max']].notna().all(axis=1) & panel[feat_cols].notna().all(axis=1)
+    panel = panel[valid]
+
+    log_event('train', f'{len(feat_cols)} features, {len(panel):,} valid rows')
+    return panel, feat_cols
+
+
+def train_models():
+    """Train SINGLE CatBoostRanker for fwd_min and fwd_max.
+    Matches regime_v2.py exactly: single model per target, same CB params, same data.
+    """
+    from catboost import CatBoostRanker, Pool
+
+    log_event('train', 'Starting model training (SINGLE model per target, matches backtest)')
+
+    panel, feat_cols = _load_training_panel()
+
+    # Use most recent TRAIN_MONTHS for training
     dates = panel.index.get_level_values('date').unique().sort_values()
     train_end = dates[-1]
     train_start = train_end - pd.DateOffset(months=TRAIN_MONTHS)
+    d = panel.index.get_level_values('date')
+    train = panel[(d >= train_start) & (d <= train_end)]
 
-    train_mask = ((panel.index.get_level_values('date') >= train_start) &
-                  (panel.index.get_level_values('date') <= train_end))
-    train = panel[train_mask].copy()
-    g = train.groupby(level='symbol')
-    train['raw_fwd'] = g['close'].transform(lambda x: x.pct_change(HOLDING_DAYS).shift(-HOLDING_DAYS))
-    market_ret = train.groupby(level='date')['raw_fwd'].transform('mean')
-    train['neutral_fwd'] = train['raw_fwd'] - market_ret
+    if len(train) < 1000:
+        log_event('error', f'Not enough training data: {len(train)} rows')
+        return None, None, feat_cols
 
-    purge_cutoff = train.index.get_level_values('date').max() - pd.Timedelta(days=HOLDING_DAYS + 4)
-    train = train[train.index.get_level_values('date') <= purge_cutoff]
-    train = train.dropna(subset=['neutral_fwd'])
+    # Group IDs for ranking (matches regime_v2.py)
+    td = train.index.get_level_values('date')
+    ud = td.unique().sort_values()
+    gid = np.array([{v: i for i, v in enumerate(ud)}[x] for x in td])
 
-    p1, p99 = train['neutral_fwd'].quantile([0.02, 0.98])
-    train['neutral_fwd'] = train['neutral_fwd'].clip(p1, p99)
-    train['target_rank'] = train.groupby(level='date')['neutral_fwd'].transform(
-        lambda x: pd.qcut(x, 5, labels=False, duplicates='drop') if len(x) >= 5 else 2
-    ).fillna(2).astype(int)
+    X = train[feat_cols].values
 
-    if 'vol_avg_28' in panel.columns:
-        vol = panel.loc[train.index, 'vol_avg_28']
-        thresh = vol.groupby(level='date').transform(lambda x: x.quantile(0.3))
-        train = train[vol > thresh]
+    # Train fwd_min model (for SHORT selection)
+    log_event('train', f'Training fwd_min model ({len(train):,} rows)...')
+    m_min = CatBoostRanker(**CATBOOST_PARAMS)
+    m_min.fit(Pool(X, train['fwd_min'].values, group_id=gid))
+    m_min.save_model(str(MODEL_MIN_FILE))
 
-    # Train ensemble
-    models = []
-    n_dates = train.index.get_level_values('date').nunique()
-    train_dates = train.index.get_level_values('date').unique().sort_values()
+    # Train fwd_max model (for LONG selection)
+    log_event('train', f'Training fwd_max model ({len(train):,} rows)...')
+    m_max = CatBoostRanker(**CATBOOST_PARAMS)
+    m_max.fit(Pool(X, train['fwd_max'].values, group_id=gid))
+    m_max.save_model(str(MODEL_MAX_FILE))
 
-    for k in range(N_ENSEMBLE):
-        offset = int(n_dates * 0.2 * k / N_ENSEMBLE)
-        end_idx = n_dates - int(n_dates * 0.2 * (N_ENSEMBLE - 1 - k) / N_ENSEMBLE)
-        subset_dates = train_dates[offset:end_idx]
-        subset = train[train.index.get_level_values('date').isin(subset_dates)]
-
-        if len(subset) < 500:
-            continue
-
-        X = np.nan_to_num(subset[feat_cols].values, nan=0, posinf=0, neginf=0)
-        y = subset['target_rank'].values
-        gids = pd.Categorical(subset.index.get_level_values('date')).codes
-
-        params = CATBOOST_PARAMS.copy()
-        params['random_seed'] = 42 + k
-        model = CatBoostRanker(**params)
-        model.fit(X, y, group_id=gids)
-        models.append(model)
-
-    # Save models
-    for i, m in enumerate(models):
-        m.save_model(str(PAPER_DIR / f'model_{i}.cbm'))
-
-    # Save feature importance
-    if models:
-        imp = pd.Series(
-            models[0].get_feature_importance(type='PredictionValuesChange'),
-            index=feat_cols
-        ).sort_values(ascending=False)
-        imp_dict = (imp / (imp.sum() + 1e-10)).to_dict()
-        with open(PAPER_DIR / 'feature_importance.json', 'w') as f:
-            json.dump(imp_dict, f, indent=2)
-
+    # Save metadata
     meta = {
         'trained_at': datetime.now(timezone.utc).isoformat(),
         'train_start': str(train_start.date()),
         'train_end': str(train_end.date()),
-        'n_models': len(models),
         'n_rows': len(train),
+        'n_symbols': train.index.get_level_values('symbol').nunique(),
         'features': feat_cols,
+        'targets': ['fwd_min', 'fwd_max'],
+        'model_type': 'single_per_target',
     }
     with open(PAPER_DIR / 'model_meta.json', 'w') as f:
         json.dump(meta, f, indent=2)
 
-    log_event('train', f'Trained {len(models)} models on {len(train)} rows ({train_start.date()} to {train_end.date()})')
-    return models, feat_cols
+    # Save feature importance (from fwd_max model)
+    imp = pd.Series(
+        m_max.get_feature_importance(type='PredictionValuesChange'),
+        index=feat_cols
+    ).sort_values(ascending=False)
+    imp_dict = (imp / (imp.sum() + 1e-10)).to_dict()
+    with open(PAPER_DIR / 'feature_importance.json', 'w') as f:
+        json.dump(imp_dict, f, indent=2)
 
-
-def train_model_long():
-    """Train CatBoost ensemble for LONG strategy (target = fwd_max)."""
-    from catboost import CatBoostRanker
-
-    log_event('train', 'Starting LONG model training (target=fwd_max)')
-
-    sys.path.insert(0, str(SCRIPT_DIR))
-    from ml_features import load_daily_panel, compute_all_features
-
-    panel = load_daily_panel()
-    panel = compute_all_features(panel)
-
-    feat_cols = [f for f in CORE_FEATURES if f in panel.columns]
-    dates = panel.index.get_level_values('date').unique().sort_values()
-    train_end = dates[-1]
-    train_start = train_end - pd.DateOffset(months=TRAIN_MONTHS)
-
-    train_mask = ((panel.index.get_level_values('date') >= train_start) &
-                  (panel.index.get_level_values('date') <= train_end))
-    train = panel[train_mask].copy()
-
-    # LONG target: forward MAX return over holding period
-    # For each coin, compute the max price seen in next HOLDING_DAYS_LONG days
-    g = train.groupby(level='symbol')
-    train['fwd_max'] = g['close'].transform(
-        lambda x: x.rolling(HOLDING_DAYS_LONG, min_periods=1).max().shift(-HOLDING_DAYS_LONG) / x - 1
-    )
-    # Market-neutral: subtract cross-sectional mean
-    market_ret = train.groupby(level='date')['fwd_max'].transform('mean')
-    train['neutral_fwd_max'] = train['fwd_max'] - market_ret
-
-    purge_cutoff = train.index.get_level_values('date').max() - pd.Timedelta(days=HOLDING_DAYS_LONG + 4)
-    train = train[train.index.get_level_values('date') <= purge_cutoff]
-    train = train.dropna(subset=['neutral_fwd_max'])
-
-    p1, p99 = train['neutral_fwd_max'].quantile([0.02, 0.98])
-    train['neutral_fwd_max'] = train['neutral_fwd_max'].clip(p1, p99)
-    train['target_rank'] = train.groupby(level='date')['neutral_fwd_max'].transform(
-        lambda x: pd.qcut(x, 5, labels=False, duplicates='drop') if len(x) >= 5 else 2
-    ).fillna(2).astype(int)
-
-    if 'vol_avg_28' in panel.columns:
-        vol = panel.loc[train.index, 'vol_avg_28']
-        thresh = vol.groupby(level='date').transform(lambda x: x.quantile(0.3))
-        train = train[vol > thresh]
-
-    # Train ensemble
-    models = []
-    n_dates = train.index.get_level_values('date').nunique()
-    train_dates = train.index.get_level_values('date').unique().sort_values()
-
-    for k in range(N_ENSEMBLE):
-        offset = int(n_dates * 0.2 * k / N_ENSEMBLE)
-        end_idx = n_dates - int(n_dates * 0.2 * (N_ENSEMBLE - 1 - k) / N_ENSEMBLE)
-        subset_dates = train_dates[offset:end_idx]
-        subset = train[train.index.get_level_values('date').isin(subset_dates)]
-
-        if len(subset) < 500:
-            continue
-
-        X = np.nan_to_num(subset[feat_cols].values, nan=0, posinf=0, neginf=0)
-        y = subset['target_rank'].values
-        gids = pd.Categorical(subset.index.get_level_values('date')).codes
-
-        params = CATBOOST_PARAMS.copy()
-        params['random_seed'] = 142 + k  # different seed from short models
-        model = CatBoostRanker(**params)
-        model.fit(X, y, group_id=gids)
-        models.append(model)
-
-    # Save models with _long suffix
-    for i, m in enumerate(models):
-        m.save_model(str(PAPER_DIR / f'model_long_{i}.cbm'))
-
-    # Save feature importance
-    if models:
-        imp = pd.Series(
-            models[0].get_feature_importance(type='PredictionValuesChange'),
-            index=feat_cols
-        ).sort_values(ascending=False)
-        imp_dict = (imp / (imp.sum() + 1e-10)).to_dict()
-        with open(PAPER_DIR / 'feature_importance_long.json', 'w') as f:
-            json.dump(imp_dict, f, indent=2)
-
-    meta = {
-        'trained_at': datetime.now(timezone.utc).isoformat(),
-        'train_start': str(train_start.date()),
-        'train_end': str(train_end.date()),
-        'n_models': len(models),
-        'n_rows': len(train),
-        'features': feat_cols,
-        'target': 'fwd_max',
-    }
-    with open(PAPER_DIR / 'model_meta_long.json', 'w') as f:
-        json.dump(meta, f, indent=2)
-
-    log_event('train', f'LONG: Trained {len(models)} models on {len(train)} rows ({train_start.date()} to {train_end.date()})')
-    return models, feat_cols
+    log_event('train', f'Trained 2 single models on {len(train):,} rows '
+              f'({train_start.date()} to {train_end.date()}), {len(feat_cols)} features')
+    return m_min, m_max, feat_cols
 
 
 def load_models():
-    """Load saved models."""
+    """Load saved single models (fwd_min + fwd_max)."""
     from catboost import CatBoostRanker
-    models = []
-    for i in range(N_ENSEMBLE):
-        path = PAPER_DIR / f'model_{i}.cbm'
-        if path.exists():
-            m = CatBoostRanker()
-            m.load_model(str(path))
-            models.append(m)
+    m_min, m_max = None, None
+    if MODEL_MIN_FILE.exists():
+        m_min = CatBoostRanker()
+        m_min.load_model(str(MODEL_MIN_FILE))
+    if MODEL_MAX_FILE.exists():
+        m_max = CatBoostRanker()
+        m_max.load_model(str(MODEL_MAX_FILE))
     meta_path = PAPER_DIR / 'model_meta.json'
-    feat_cols = CORE_FEATURES
+    feat_cols = None
     if meta_path.exists():
         with open(meta_path) as f:
             meta = json.load(f)
-            feat_cols = meta.get('features', CORE_FEATURES)
-    return models, feat_cols
+            feat_cols = meta.get('features')
+    return m_min, m_max, feat_cols
 
 
 def models_need_retrain():
-    """Check if models are stale (>56 days old)."""
+    """Check if models are stale (>56 days old) or missing."""
     meta_path = PAPER_DIR / 'model_meta.json'
-    if not meta_path.exists():
-        return True
-    with open(meta_path) as f:
-        meta = json.load(f)
-    trained = pd.Timestamp(meta['trained_at'])
-    age_days = (pd.Timestamp.now(tz='UTC') - trained).days
-    return age_days >= 56
-
-
-def load_models_long():
-    """Load saved LONG models."""
-    from catboost import CatBoostRanker
-    models = []
-    for i in range(N_ENSEMBLE):
-        path = PAPER_DIR / f'model_long_{i}.cbm'
-        if path.exists():
-            m = CatBoostRanker()
-            m.load_model(str(path))
-            models.append(m)
-    meta_path = PAPER_DIR / 'model_meta_long.json'
-    feat_cols = CORE_FEATURES
-    if meta_path.exists():
-        with open(meta_path) as f:
-            meta = json.load(f)
-            feat_cols = meta.get('features', CORE_FEATURES)
-    return models, feat_cols
-
-
-def models_need_retrain_long():
-    """Check if LONG models are stale (>56 days old)."""
-    meta_path = PAPER_DIR / 'model_meta_long.json'
-    if not meta_path.exists():
+    if not meta_path.exists() or not MODEL_MIN_FILE.exists() or not MODEL_MAX_FILE.exists():
         return True
     with open(meta_path) as f:
         meta = json.load(f)
@@ -729,17 +749,17 @@ def check_stops(state):
 
 
 def rebalance(state):
-    """Run the full rebalance cycle: close old positions, predict, open new."""
-    log_event('rebalance', 'Starting rebalance cycle')
+    """Run the full SHORT rebalance cycle: close old positions, predict, open new."""
+    log_event('rebalance', 'Starting SHORT rebalance cycle')
 
     # Load or train models
-    models, feat_cols = load_models()
-    if not models or models_need_retrain():
+    m_min, m_max, feat_cols = load_models()
+    if m_min is None or models_need_retrain():
         log_event('rebalance', 'Models need training')
-        models, feat_cols = train_model()
+        m_min, m_max, feat_cols = train_models()
 
-    if not models:
-        log_event('error', 'No models available, skipping rebalance')
+    if m_min is None:
+        log_event('error', 'No fwd_min model available, skipping SHORT rebalance')
         return state
 
     # Close any remaining positions
@@ -764,8 +784,8 @@ def rebalance(state):
         save_trades(trades)
         state['positions'] = []
 
-    # Get live universe
-    symbols_info = get_futures_symbols()
+    # Get live universe (SPOT)
+    symbols_info = get_spot_symbols()
     if len(symbols_info) < 15:
         log_event('error', f'Only {len(symbols_info)} symbols found, need 15+')
         return state
@@ -793,28 +813,21 @@ def rebalance(state):
 
     X = np.nan_to_num(cross[avail_feats].values, nan=0, posinf=0, neginf=0)
 
-    # Ensemble prediction
-    scores = []
-    for m in models:
-        try:
-            s = m.predict(X)
-            s = (s - s.mean()) / (s.std() + 1e-10)
-            scores.append(s)
-        except Exception as e:
-            log_event('error', f'Model predict failed: {e}')
-
-    if not scores:
-        log_event('error', 'All model predictions failed')
+    # Single model prediction (fwd_min — bottom = expected losers = short candidates)
+    try:
+        cross = cross.copy()
+        cross['score_min'] = m_min.predict(X)
+        cross['rank_min'] = cross['score_min'].rank(pct=True)
+    except Exception as e:
+        log_event('error', f'fwd_min model predict failed: {e}')
         return state
 
-    cross = cross.copy()
-    cross['score'] = np.mean(scores, axis=0)
-    cross = cross.sort_values('score', ascending=True)  # lowest score = worst = short
+    cross = cross.sort_values('score_min', ascending=True)  # lowest score = worst = short
 
-    # Select bottom N to short
+    # Select bottom N to short (matches regime_v2.py SHORT_TOP=5)
     short_syms = cross.head(TOP_N).index.tolist()
 
-    # Get entry prices
+    # Get entry prices (use SPOT prices for SPOT positions)
     prices = fetch_current_prices(short_syms)
     funding_rates = fetch_current_funding(short_syms)
 
@@ -832,7 +845,7 @@ def rebalance(state):
             'entry_time': now,
             'trough': price,
             'current_price': price,
-            'score': float(cross.loc[sym, 'score']),
+            'score': float(cross.loc[sym, 'score_min']),
             'funding_rate': funding_rates.get(sym, 0),
             'features': {f: float(cross.loc[sym, f]) if f in cross.columns else None for f in avail_feats[:5]},
             'unrealized_pnl': 0.0,
@@ -987,14 +1000,14 @@ def rebalance_long(state, panel=None, symbols_info=None):
     """Run the LONG rebalance cycle: close old positions, predict, open new."""
     log_event('rebalance', 'Starting LONG rebalance cycle')
 
-    # Load or train LONG models
-    models, feat_cols = load_models_long()
-    if not models or models_need_retrain_long():
-        log_event('rebalance', 'LONG models need training')
-        models, feat_cols = train_model_long()
+    # Load or train models (shared with short — single model per target)
+    m_min, m_max, feat_cols = load_models()
+    if m_max is None or models_need_retrain():
+        log_event('rebalance', 'Models need training')
+        m_min, m_max, feat_cols = train_models()
 
-    if not models:
-        log_event('error', 'No LONG models available, skipping rebalance')
+    if m_max is None:
+        log_event('error', 'No fwd_max model available, skipping LONG rebalance')
         return state
 
     # Close any remaining long positions
@@ -1022,7 +1035,7 @@ def rebalance_long(state, panel=None, symbols_info=None):
     # Build live panel if not provided
     if panel is None:
         if symbols_info is None:
-            symbols_info = get_futures_symbols()
+            symbols_info = get_spot_symbols()
         if len(symbols_info) < 15:
             log_event('error', f'Only {len(symbols_info)} symbols found, need 15+')
             return state
@@ -1062,23 +1075,16 @@ def rebalance_long(state, panel=None, symbols_info=None):
 
     X = np.nan_to_num(cross[avail_feats].values, nan=0, posinf=0, neginf=0)
 
-    # Ensemble prediction
-    scores = []
-    for m in models:
-        try:
-            s = m.predict(X)
-            s = (s - s.mean()) / (s.std() + 1e-10)
-            scores.append(s)
-        except Exception as e:
-            log_event('error', f'LONG model predict failed: {e}')
-
-    if not scores:
-        log_event('error', 'All LONG model predictions failed')
+    # Single model prediction (fwd_max — highest = expected winners = long candidates)
+    try:
+        cross = cross.copy()
+        cross['score_max'] = m_max.predict(X)
+        cross['rank_max'] = cross['score_max'].rank(pct=True)
+    except Exception as e:
+        log_event('error', f'fwd_max model predict failed: {e}')
         return state
 
-    cross = cross.copy()
-    cross['score'] = np.mean(scores, axis=0)
-    cross = cross.sort_values('score', ascending=False)  # highest score = best = long
+    cross = cross.sort_values('score_max', ascending=False)  # highest score = best = long
 
     # Select top 10% of universe, max MAX_POSITIONS_LONG
     n_long = max(3, int(len(cross) * LONG_PCT))
@@ -1102,7 +1108,7 @@ def rebalance_long(state, panel=None, symbols_info=None):
             'entry_time': now,
             'peak': price,
             'current_price': price,
-            'score': float(cross.loc[sym, 'score']),
+            'score': float(cross.loc[sym, 'score_max']),
             'funding_rate': funding_rates.get(sym, 0),
             'unrealized_pnl': 0.0,
             'days_held': 0,
@@ -1172,7 +1178,7 @@ def run_cycle():
     shared_panel = None
     shared_symbols_info = None
     if needs_rebalance_short or needs_rebalance_long:
-        shared_symbols_info = get_futures_symbols()
+        shared_symbols_info = get_spot_symbols()
         if len(shared_symbols_info) >= 15:
             log_event('data', f'Building shared live panel for {len(shared_symbols_info)} symbols')
             shared_panel = build_live_panel(shared_symbols_info)
@@ -1447,24 +1453,26 @@ if __name__ == '__main__':
     if args.status:
         print_status()
     elif args.retrain:
-        train_model()
-        train_model_long()
-        print("Both SHORT and LONG models retrained successfully.")
+        train_models()
+        print("Models retrained successfully (single fwd_min + fwd_max, matches backtest).")
     elif args.reset:
         for f in [STATE_FILE, TRADES_FILE, EQUITY_FILE, LOG_FILE,
-                  TRADES_LONG_FILE, EQUITY_LONG_FILE]:
+                  TRADES_LONG_FILE, EQUITY_LONG_FILE,
+                  MODEL_MIN_FILE, MODEL_MAX_FILE]:
             if f.exists():
                 f.unlink()
-        # Also remove long model files
-        for i in range(N_ENSEMBLE):
-            lm = PAPER_DIR / f'model_long_{i}.cbm'
-            if lm.exists():
-                lm.unlink()
-        for meta in ['model_meta_long.json', 'feature_importance_long.json']:
+        # Clean up old ensemble model files if they exist
+        for i in range(10):
+            for pat in [f'model_{i}.cbm', f'model_long_{i}.cbm']:
+                old = PAPER_DIR / pat
+                if old.exists():
+                    old.unlink()
+        for meta in ['model_meta.json', 'model_meta_long.json',
+                     'feature_importance.json', 'feature_importance_long.json']:
             mp = PAPER_DIR / meta
             if mp.exists():
                 mp.unlink()
-        print("Paper trading state reset (both short and long).")
+        print("Paper trading state reset (both short and long, all models cleared).")
     elif args.daemon:
         run_daemon()
     else:
